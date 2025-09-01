@@ -10,7 +10,7 @@ BUCKET_NAME = "archivos-excel"  # Asegúrate de crear este bucket en Supabase St
 
 
 
-st.title("Verificador de Preventivos V2.0 🚀")
+st.title("Verificador de Preventivos V3.0 🚀")
 
 # -------------------------------
 # Datos fijos por máquina y preventivos
@@ -122,6 +122,7 @@ df = pd.DataFrame({
 # Mostrar resultados
 st.subheader(maquina_seleccionada)
 st.dataframe(df.style.applymap(color_estado))
+
 
 
 
