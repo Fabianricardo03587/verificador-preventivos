@@ -1,13 +1,16 @@
 import streamlit as st
+
+import streamlit as st
 import pandas as pd
 
-st.title("Verificador de Preventivos 🚀")
+# Inicializar variables en session_state
+if "df_excel" not in st.session_state:
+    st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
 
-# -------------------------------
-# Datos fijos por máquina y preventivos
-# -------------------------------
-maquinas = {
-    "XQMX-2-1-1850T": [
+if "maquinas" not in st.session_state:
+    # Ejemplo: diccionario con máquinas y sus códigos
+    st.session_state.maquinas = {
+        "XQMX-2-1-1850T": [
         "XQMX-2-1-1850T-CVYR-01-PM-01",
         "XQMX-2-1-1850T-PM-01",
         "XQMX-2-1-1850T-PRES-01-PM-01",
@@ -42,53 +45,48 @@ maquinas = {
         "XQMX-2-3-1850T-TCU-02-PM-01",
         "XQMX-2-3-1850T-TCU-02-PM-02"
     ]
-}
+    }
 
-# Inicializamos session_state para el DataFrame
-if "df_excel" not in st.session_state:
-    st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
+# Subir archivo Excel
+uploaded_file = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
 
-# Subida de archivo
-archivo = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
+if uploaded_file:
+    df_excel_new = pd.read_excel(uploaded_file)
+    st.session_state.df_excel = df_excel_new  # Reemplaza el anterior por el nuevo
+    st.success("Archivo cargado correctamente!")
 
-if archivo:
-    st.session_state.df_excel = pd.read_excel(archivo)
-
-# Usamos siempre el dataframe guardado en session_state
-df_excel = st.session_state.df_excel
-
-# Filtro para elegir la máquina
-maquina_seleccionada = st.selectbox("Selecciona una máquina", list(maquinas.keys()))
-
-# Códigos de la máquina seleccionada
-codigos = maquinas[maquina_seleccionada]
-
-# Función para colorear estados
+# Función para colorear estado
 def color_estado(val):
-    if val == "Pendiente":
-        return 'background-color: #FF9999'  # rojo claro
-    elif val == "Completado":
-        return 'background-color: #99FF99'  # verde claro
-    return ''
+    if val == "Realizado":
+        return "background-color: lightgreen"
+    elif val == "Pendiente":
+        return "background-color: lightcoral"
+    else:
+        return ""
 
-# Crear dataframe cruzando con Excel
-df = pd.DataFrame({
-    "Código": codigos,
-    "Estado": [
-        "Completado" if (
-            (maquina_seleccionada in df_excel["MAQUINA"].values) and
-            (c in df_excel.loc[df_excel["MAQUINA"] == maquina_seleccionada, "CODIGO"].values)
-        ) else "Pendiente"
-        for c in codigos
-    ],
-    "Fecha": [
-        df_excel.loc[(df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c), "FECHA"].values[0]
-        if ((df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c)).any()
-        else ""
-        for c in codigos
-    ]
-})
+# Mostrar tablas por máquina
+columnas = st.columns(len(st.session_state.maquinas))
 
-# Mostrar resultados
-st.subheader(maquina_seleccionada)
-st.dataframe(df.style.applymap(color_estado))
+for i, (maquina, codigos) in enumerate(st.session_state.maquinas.items()):
+    col = columnas[i]
+    with col:
+        st.subheader(maquina)
+        df = pd.DataFrame({
+            "Código": codigos,
+            "Estado": [
+                "Realizado" if ((st.session_state.df_excel["MAQUINA"]==maquina) & 
+                                (st.session_state.df_excel["CODIGO"]==c)).any() 
+                else "Pendiente" for c in codigos
+            ],
+            "Fecha": [
+                st.session_state.df_excel.loc[
+                    (st.session_state.df_excel["MAQUINA"]==maquina) &
+                    (st.session_state.df_excel["CODIGO"]==c),
+                    "FECHA"
+                ].values[0] if ((st.session_state.df_excel["MAQUINA"]==maquina) & 
+                                (st.session_state.df_excel["CODIGO"]==c)).any() else "" 
+                for c in codigos
+            ]
+        })
+        st.dataframe(df.style.applymap(color_estado))
+
