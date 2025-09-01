@@ -24,7 +24,7 @@ maquinas_info = {
         {"Código": "A001", "Descripción": "Motor", "Nombre": "XQMX-2-2-1850T-CVYR-01-PM-01"},
         # etc.
     ]
-
+}
 
 # Subir archivo
 uploaded_file = st.file_uploader("Selecciona un archivo Excel", type=["xlsx", "xls"])
@@ -61,6 +61,7 @@ if uploaded_file is not None:
 
     except Exception as e:
         st.error(f"Ocurrió un error al procesar o subir el archivo: {e}")
+
 
 
 
