@@ -12,7 +12,7 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 st.title("Verificador de Preventivos")
 
 # Diccionario de referencia
-maquinas_info = {
+dict_ref = {
     "XQMX-2-1-1850T": [
         {"Código": "A001", "Descripción": "Motor", "Nombre": "XQMX-2-1-1850T-CVYR-01-PM-01"},
         {"Código": "A002", "Descripción": "Sensor", "Nombre": "XQMX-2-1-1850T-PM-01"},
@@ -61,6 +61,7 @@ if uploaded_file is not None:
 
     except Exception as e:
         st.error(f"Ocurrió un error al procesar o subir el archivo: {e}")
+
 
 
 
