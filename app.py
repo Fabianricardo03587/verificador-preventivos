@@ -59,22 +59,17 @@ if "df_excel" not in st.session_state:
 
 # Subida de archivo
 
-
 # --- SUBIDA DE ARCHIVO ---
 uploaded_file = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
 
-if uploaded_file:
-    # Eliminar archivo anterior (solo mantenemos 1)
-    files_list = supabase.storage.from_(BUCKET_NAME).list()
-    for f in files_list:
-        supabase.storage.from_(BUCKET_NAME).remove([f["name"]])
-    
-    # Subir el nuevo archivo
-    supabase.storage.from_(BUCKET_NAME).upload("ultimo.xlsx", uploaded_file)
+if uploaded_file is not None:
+    # Subir el archivo a Supabase, reemplazando si ya existe
+    supabase.storage.from_(BUCKET_NAME).upload(
+        "ultimo.xlsx",
+        uploaded_file.read(),
+        {"upsert": True}  # sobreescribe si ya existe
+    )
     st.success("Archivo subido y guardado en Supabase Storage ✅")
-
-
-
 
 
 # --- LECTURA DEL ARCHIVO DESDE SUPABASE ---
