@@ -15,67 +15,80 @@ maquinas = {
         "XQMX-2-1-1850T-ROB-01-PM-02",
         "XQMX-2-1-1850T-TCU-01-PM-01"
     ],
-    "XQMX-2-2-1850T": ["XQMX-2-2-1850T-CVYR-01-PM-01",
-			"XQMX-2-2-1850T-PM-01",
-			"XQMX-2-2-1850T-ROB-01-PM-02",
-			"XQMX-2-2-1850T-ROB-02-PM-01",
-			"XQMX-2-2-1850T-ROB-02-PM-01",
-			"XQMX-2-2-1850T-ROB-02-PM-02",
-			"XQMX-2-2-1850T-TAB-01-PM-01",
-			"XQMX-2-2-1850T-TCU-01-PM-01",
-			"XQMX-2-2-1850T-TCU-01-PM-02",
-			"XQMX-2-2-1850T-TCU-02-PM-01",
-			"XQMX-2-2-1850T-TCU-02-PM-02"
-],
-    "XQMX-2-3-1850T": ["XQMX-2-3-1850T-CVYR-01-PM-01",
-			"XQMX-2-3-1850T-PM-01",
-			"XQMX-2-3-1850T-PRES-01-PM-01",
-			"XQMX-2-3-1850T-PRO-01-PM-01",
-			"XQMX-2-3-1850T-ROB-01-PM-01",
-			"XQMX-2-3-1850T-ROB-01-PM-02",
-			"XQMX-2-3-1850T-ROB-02-PM-01",
-			"XQMX-2-3-1850T-ROB-02-PM-02",
-			"XQMX-2-3-1850T-ROB-03-PM-01",
-			"XQMX-2-3-1850T-TCU-01-PM-01",
-			"XQMX-2-3-1850T-TCU-01-PM-02",
-			"XQMX-2-3-1850T-TCU-02-PM-01",
-			"XQMX-2-3-1850T-TCU-02-PM-02",
-]
+    "XQMX-2-2-1850T": [
+        "XQMX-2-2-1850T-CVYR-01-PM-01",
+        "XQMX-2-2-1850T-PM-01",
+        "XQMX-2-2-1850T-ROB-01-PM-02",
+        "XQMX-2-2-1850T-ROB-02-PM-01",
+        "XQMX-2-2-1850T-ROB-02-PM-02",
+        "XQMX-2-2-1850T-TAB-01-PM-01",
+        "XQMX-2-2-1850T-TCU-01-PM-01",
+        "XQMX-2-2-1850T-TCU-01-PM-02",
+        "XQMX-2-2-1850T-TCU-02-PM-01",
+        "XQMX-2-2-1850T-TCU-02-PM-02"
+    ],
+    "XQMX-2-3-1850T": [
+        "XQMX-2-3-1850T-CVYR-01-PM-01",
+        "XQMX-2-3-1850T-PM-01",
+        "XQMX-2-3-1850T-PRES-01-PM-01",
+        "XQMX-2-3-1850T-PRO-01-PM-01",
+        "XQMX-2-3-1850T-ROB-01-PM-01",
+        "XQMX-2-3-1850T-ROB-01-PM-02",
+        "XQMX-2-3-1850T-ROB-02-PM-01",
+        "XQMX-2-3-1850T-ROB-02-PM-02",
+        "XQMX-2-3-1850T-ROB-03-PM-01",
+        "XQMX-2-3-1850T-TCU-01-PM-01",
+        "XQMX-2-3-1850T-TCU-01-PM-02",
+        "XQMX-2-3-1850T-TCU-02-PM-01",
+        "XQMX-2-3-1850T-TCU-02-PM-02"
+    ]
 }
 
-# Subida de archivo opcional
-archivo = st.file_uploader("Sube tu archivo Excel para actualizar estados y fechas", type=["xlsx"])
+# Inicializamos session_state para el DataFrame
+if "df_excel" not in st.session_state:
+    st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
 
-# Cargamos datos del Excel si existe
+# Subida de archivo
+archivo = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
+
 if archivo:
-    df_excel = pd.read_excel(archivo)
-else:
-    df_excel = pd.DataFrame(columns=["Código", "Estado", "Fecha"])  # tabla vacía
+    st.session_state.df_excel = pd.read_excel(archivo)
 
+# Usamos siempre el dataframe guardado en session_state
+df_excel = st.session_state.df_excel
 
+# Filtro para elegir la máquina
+maquina_seleccionada = st.selectbox("Selecciona una máquina", list(maquinas.keys()))
 
-# Crear columnas
-columnas = st.columns(len(maquinas))
+# Códigos de la máquina seleccionada
+codigos = maquinas[maquina_seleccionada]
 
 # Función para colorear estados
 def color_estado(val):
     if val == "Pendiente":
-        color = 'background-color: #FF9999'  # rojo claro
+        return 'background-color: #FF9999'  # rojo claro
     elif val == "Completado":
-        color = 'background-color: #99FF99'  # verde claro
-    else:
-        color = ''
-    return color
+        return 'background-color: #99FF99'  # verde claro
+    return ''
 
-# Mostrar tablas
-for i, (maquina, codigos) in enumerate(maquinas.items()):
-    col = columnas[i]
-    with col:
-        st.subheader(maquina)
-        df = pd.DataFrame({
-            "Código": codigos,
-            "Estado": [df_excel.loc[df_excel["Código"]==c, "Estado"].values[0] if c in df_excel["Código"].values else "Pendiente" for c in codigos],
-            "Fecha": [df_excel.loc[df_excel["Código"]==c, "Fecha"].values[0] if c in df_excel["Código"].values else "" for c in codigos]
-        })
-        # Aplicar colores y mostrar dataframe con mejor espaciado
-        st.dataframe(df.style.applymap(color_estado), height=200)
+# Crear dataframe cruzando con Excel
+df = pd.DataFrame({
+    "Código": codigos,
+    "Estado": [
+        "Completado" if (
+            (maquina_seleccionada in df_excel["MAQUINA"].values) and
+            (c in df_excel.loc[df_excel["MAQUINA"] == maquina_seleccionada, "CODIGO"].values)
+        ) else "Pendiente"
+        for c in codigos
+    ],
+    "Fecha": [
+        df_excel.loc[(df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c), "FECHA"].values[0]
+        if ((df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c)).any()
+        else ""
+        for c in codigos
+    ]
+})
+
+# Mostrar resultados
+st.subheader(maquina_seleccionada)
+st.dataframe(df.style.applymap(color_estado))
