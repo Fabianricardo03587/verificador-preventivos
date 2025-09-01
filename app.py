@@ -63,11 +63,14 @@ if "df_excel" not in st.session_state:
 uploaded_file = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
 
 if uploaded_file is not None:
-    # Subir el archivo a Supabase, reemplazando si ya existe
+    # Convertimos a bytes
+    file_bytes = uploaded_file.read()
+
+    # Subimos a Supabase con upsert=True
     supabase.storage.from_(BUCKET_NAME).upload(
         "ultimo.xlsx",
-        uploaded_file.read(),
-        {"upsert": True}  # sobreescribe si ya existe
+        file_bytes,
+        {"upsert": True}
     )
     st.success("Archivo subido y guardado en Supabase Storage ✅")
 
@@ -120,5 +123,6 @@ df = pd.DataFrame({
 # Mostrar resultados
 st.subheader(maquina_seleccionada)
 st.dataframe(df.style.applymap(color_estado))
+
 
 
