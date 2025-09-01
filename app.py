@@ -12,44 +12,18 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 st.title("Verificador de Preventivos")
 
 # Diccionario de referencia
-
-maquinas = {
+maquinas_info = {
     "XQMX-2-1-1850T": [
-        "XQMX-2-1-1850T-CVYR-01-PM-01",
-        "XQMX-2-1-1850T-PM-01",
-        "XQMX-2-1-1850T-PRES-01-PM-01",
-        "XQMX-2-1-1850T-ROB-01-PM-01",
-        "XQMX-2-1-1850T-ROB-01-PM-02",
-        "XQMX-2-1-1850T-TCU-01-PM-01"
+        {"Código": "A001", "Descripción": "Motor", "Nombre": "XQMX-2-1-1850T-CVYR-01-PM-01"},
+        {"Código": "A002", "Descripción": "Sensor", "Nombre": "XQMX-2-1-1850T-PM-01"},
+        {"Código": "A003", "Descripción": "PLC", "Nombre": "XQMX-2-1-1850T-PRES-01-PM-01"},
+        # y así con los demás...
     ],
+
     "XQMX-2-2-1850T": [
-        "XQMX-2-2-1850T-CVYR-01-PM-01",
-        "XQMX-2-2-1850T-PM-01",
-        "XQMX-2-2-1850T-ROB-01-PM-02",
-        "XQMX-2-2-1850T-ROB-02-PM-01",
-        "XQMX-2-2-1850T-ROB-02-PM-02",
-        "XQMX-2-2-1850T-TAB-01-PM-01",
-        "XQMX-2-2-1850T-TCU-01-PM-01",
-        "XQMX-2-2-1850T-TCU-01-PM-02",
-        "XQMX-2-2-1850T-TCU-02-PM-01",
-        "XQMX-2-2-1850T-TCU-02-PM-02"
-    ],
-    "XQMX-2-3-1850T": [
-        "XQMX-2-3-1850T-CVYR-01-PM-01",
-        "XQMX-2-3-1850T-PM-01",
-        "XQMX-2-3-1850T-PRES-01-PM-01",
-        "XQMX-2-3-1850T-PRO-01-PM-01",
-        "XQMX-2-3-1850T-ROB-01-PM-01",
-        "XQMX-2-3-1850T-ROB-01-PM-02",
-        "XQMX-2-3-1850T-ROB-02-PM-01",
-        "XQMX-2-3-1850T-ROB-02-PM-02",
-        "XQMX-2-3-1850T-ROB-03-PM-01",
-        "XQMX-2-3-1850T-TCU-01-PM-01",
-        "XQMX-2-3-1850T-TCU-01-PM-02",
-        "XQMX-2-3-1850T-TCU-02-PM-01",
-        "XQMX-2-3-1850T-TCU-02-PM-02"
+        {"Código": "A001", "Descripción": "Motor", "Nombre": "XQMX-2-2-1850T-CVYR-01-PM-01"},
+        # etc.
     ]
-}
 
 
 # Subir archivo
@@ -87,6 +61,7 @@ if uploaded_file is not None:
 
     except Exception as e:
         st.error(f"Ocurrió un error al procesar o subir el archivo: {e}")
+
 
 
 
