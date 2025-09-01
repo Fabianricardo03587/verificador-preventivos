@@ -2,19 +2,17 @@ import streamlit as st
 import pandas as pd
 from supabase import create_client, Client
 
-# --- CONFIGURACIÓN DE SUPABASE ---
+# Configuración de Supabase
 SUPABASE_URL = "https://wubnausfadmzqqlregzh.supabase.co"
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind1Ym5hdXNmYWRtenFxbHJlZ3poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NDg4MjEsImV4cCI6MjA3MjMyNDgyMX0.rEblj4SSJv3oca4cVKVvVM7eoDo5HpBKwyW5coF1WBs"
+BUCKET_NAME = "archivos-excel"
+
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-BUCKET_NAME = "archivos-excel"  # Asegúrate de crear este bucket en Supabase Storage
 
+st.title("Verificador de Preventivos")
 
+# Diccionario de referencia
 
-st.title("Verificador de Preventivos V3.0 🚀")
-
-# -------------------------------
-# Datos fijos por máquina y preventivos
-# -------------------------------
 maquinas = {
     "XQMX-2-1-1850T": [
         "XQMX-2-1-1850T-CVYR-01-PM-01",
@@ -53,77 +51,42 @@ maquinas = {
     ]
 }
 
-# Inicializamos session_state para el DataFrame
-if "df_excel" not in st.session_state:
-    st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
 
-# Subida de archivo
-
-# --- SUBIDA DE ARCHIVO ---
-uploaded_file = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
+# Subir archivo
+uploaded_file = st.file_uploader("Selecciona un archivo Excel", type=["xlsx", "xls"])
 
 if uploaded_file is not None:
-    file_bytes = uploaded_file.read()
-    
-    # Subir archivo a Supabase Storage
-    supabase.storage.from_(BUCKET_NAME).upload(
-        "ultimo.xlsx",   # nombre del archivo en el bucket
-        file_bytes,      # contenido del archivo en bytes
-        upsert=True      # sobrescribir si ya existe
-    )
-    
-    st.success("Archivo subido correctamente ✅")
+    try:
+        # Leer archivo con pandas
+        df = pd.read_excel(uploaded_file)
+        st.write("Vista previa del archivo subido:")
+        st.dataframe(df)
 
+        # Comparar con diccionario
+        st.write("Comparación con el diccionario de referencia:")
+        for col in dict_ref.keys():
+            if col in df.columns:
+                df[f"{col}_exists"] = df[col].isin(dict_ref[col])
+            else:
+                df[f"{col}_exists"] = False  # columna no existe en el Excel
 
+        st.dataframe(df)
 
-# --- LECTURA DEL ARCHIVO DESDE SUPABASE ---
-try:
-    data = supabase.storage.from_(BUCKET_NAME).download("ultimo.xlsx")
-    df_excel = pd.read_excel(data)
-    st.session_state.df_excel = df_excel  # <- aquí guardamos el Excel en session_state
-except Exception as e:
-    st.info("No hay archivo guardado en Supabase. Sube uno para comenzar.")
-    df_excel = st.session_state.df_excel
+        # Preparar archivo en bytes para subir a Supabase
+        uploaded_file.seek(0)
+        file_bytes = uploaded_file.read()
 
+        # Subir archivo a Supabase Storage
+        supabase.storage.from_(BUCKET_NAME).upload(
+            "ultimo.xlsx",
+            file_bytes,
+            upsert=True
+        )
 
-# Usamos siempre el dataframe guardado en session_state
-df_excel = st.session_state.df_excel
+        st.success("Archivo procesado y subido correctamente ✅")
 
-# Filtro para elegir la máquina
-maquina_seleccionada = st.selectbox("Selecciona una máquina", list(maquinas.keys()))
-
-# Códigos de la máquina seleccionada
-codigos = maquinas[maquina_seleccionada]
-
-# Función para colorear estados
-def color_estado(val):
-    if val == "Pendiente":
-        return 'background-color: #FF9999'  # rojo claro
-    elif val == "Completado":
-        return 'background-color: #99FF99'  # verde claro
-    return ''
-
-# Crear dataframe cruzando con Excel
-df = pd.DataFrame({
-    "Código": codigos,
-    "Estado": [
-        "Completado" if (
-            (maquina_seleccionada in df_excel["MAQUINA"].values) and
-            (c in df_excel.loc[df_excel["MAQUINA"] == maquina_seleccionada, "CODIGO"].values)
-        ) else "Pendiente"
-        for c in codigos
-    ],
-    "Fecha": [
-        df_excel.loc[(df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c), "FECHA"].values[0]
-        if ((df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c)).any()
-        else ""
-        for c in codigos
-    ]
-})
-
-# Mostrar resultados
-st.subheader(maquina_seleccionada)
-st.dataframe(df.style.applymap(color_estado))
+    except Exception as e:
+        st.error(f"Ocurrió un error al procesar o subir el archivo: {e}")
 
 
 
