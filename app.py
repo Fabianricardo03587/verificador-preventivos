@@ -18,7 +18,7 @@ st.title("Verificador de Preventivos V2.0 🚀")
 
 #-------------------------------
 
-Datos fijos por máquina y preventivos
+#Datos fijos por máquina y preventivos
 
 #-------------------------------
 
@@ -152,19 +152,19 @@ except Exception as e:
 
 st.info("No hay archivo guardado en Supabase. Sube uno para comenzar.")
 
-Usamos siempre el dataframe guardado en session_state
+#Usamos siempre el dataframe guardado en session_state
 
 df_excel = st.session_state.df_excel
 
-Filtro para elegir la máquina
+#Filtro para elegir la máquina
 
 maquina_seleccionada = st.selectbox("Selecciona una máquina", list(maquinas.keys()))
 
-Códigos de la máquina seleccionada
+#Códigos de la máquina seleccionada
 
 codigos = maquinas[maquina_seleccionada]
 
-Función para colorear estados
+#Función para colorear estados
 
 def color_estado(val):
 
@@ -178,7 +178,7 @@ elif val == "Completado":
 
 return ''
 
-Crear dataframe cruzando con Excel
+#Crear dataframe cruzando con Excel
 
 df = pd.DataFrame({
 
@@ -212,11 +212,12 @@ df = pd.DataFrame({
 
 })
 
-Mostrar resultados
+#Mostrar resultados
 
 st.subheader(maquina_seleccionada)
 
 st.dataframe(df.style.applymap(color_estado))
+
 
 
 
