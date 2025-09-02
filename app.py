@@ -4,7 +4,7 @@ import pandas as pd
 
 from supabase import create_client, Client
 
---- CONFIGURACIÓN DE SUPABASE ---
+#--- CONFIGURACION DE SUPABASE ---
 
 SUPABASE_URL = "https://wubnausfadmzqqlregzh.supabase.co"
 
@@ -217,6 +217,7 @@ Mostrar resultados
 st.subheader(maquina_seleccionada)
 
 st.dataframe(df.style.applymap(color_estado))
+
 
 
 
