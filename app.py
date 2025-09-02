@@ -61,7 +61,7 @@ if "autenticado" not in st.session_state:
     st.session_state.autenticado = False
 
 if not st.session_state.autenticado:
-    st.subheader("🔐 Autenticación requerida")
+    st.subheader("🔐 Autenticación requerida v2.0")
     correo = st.text_input("Introduce tu correo electrónico")
     if st.button("Iniciar sesión"):
         if correo in usuarios_autorizados:
@@ -143,6 +143,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
