@@ -64,8 +64,10 @@ if uploaded_file:
         supabase.storage.from_(BUCKET_NAME).remove([f["name"]])
 
     # Subir el nuevo archivo
-    supabase.storage.from_(BUCKET_NAME).upload("ultimo.xlsx", uploaded_file)
+    supabase.storage.from_(BUCKET_NAME).upload("ultimo.xlsx", uploaded_file.getvalue())
     st.success("Archivo subido y guardado en Supabase Storage ✅")
+    except Exception as e:
+        st.error(f"❌ Error al subir el archivo: {e}")
 
 #--- LECTURA DEL ARCHIVO DESDE SUPABASE ---
 try:
@@ -114,5 +116,6 @@ df = pd.DataFrame({
 #--- MOSTRAR RESULTADOS ---
 st.subheader(maquina_seleccionada)
 st.dataframe(df.style.applymap(color_estado), use_container_width=True)
+
 
 
