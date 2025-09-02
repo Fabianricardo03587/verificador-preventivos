@@ -1,70 +1,216 @@
 import streamlit as st
+
 import pandas as pd
+
 from supabase import create_client, Client
 
-# Configuración de Supabase
+--- CONFIGURACIÓN DE SUPABASE ---
+
 SUPABASE_URL = "https://wubnausfadmzqqlregzh.supabase.co"
+
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind1Ym5hdXNmYWRtenFxbHJlZ3poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NDg4MjEsImV4cCI6MjA3MjMyNDgyMX0.rEblj4SSJv3oca4cVKVvVM7eoDo5HpBKwyW5coF1WBs"
-BUCKET_NAME = "archivos-excel"
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-st.title("Verificador de Preventivos")
+BUCKET_NAME = "archivos-excel"  # Asegúrate de crear este bucket en Supabase Storage
 
-# Diccionario de referencia
-dict_ref = {
-    "XQMX-2-1-1850T": [
-        {"Código": "A001", "Descripción": "Motor", "Nombre": "XQMX-2-1-1850T-CVYR-01-PM-01"},
-        {"Código": "A002", "Descripción": "Sensor", "Nombre": "XQMX-2-1-1850T-PM-01"},
-        {"Código": "A003", "Descripción": "PLC", "Nombre": "XQMX-2-1-1850T-PRES-01-PM-01"},
-        # y así con los demás...
-    ],
+st.title("Verificador de Preventivos V2.0 🚀")
 
-    "XQMX-2-2-1850T": [
-        {"Código": "A001", "Descripción": "Motor", "Nombre": "XQMX-2-2-1850T-CVYR-01-PM-01"},
-        # etc.
-    ]
+-------------------------------
+
+Datos fijos por máquina y preventivos
+
+-------------------------------
+
+maquinas = {
+
+"XQMX-2-1-1850T": [
+
+    "XQMX-2-1-1850T-CVYR-01-PM-01",
+
+    "XQMX-2-1-1850T-PM-01",
+
+    "XQMX-2-1-1850T-PRES-01-PM-01",
+
+    "XQMX-2-1-1850T-ROB-01-PM-01",
+
+    "XQMX-2-1-1850T-ROB-01-PM-02",
+
+    "XQMX-2-1-1850T-TCU-01-PM-01"
+
+],
+
+"XQMX-2-2-1850T": [
+
+    "XQMX-2-2-1850T-CVYR-01-PM-01",
+
+    "XQMX-2-2-1850T-PM-01",
+
+    "XQMX-2-2-1850T-ROB-01-PM-02",
+
+    "XQMX-2-2-1850T-ROB-02-PM-01",
+
+    "XQMX-2-2-1850T-ROB-02-PM-02",
+
+    "XQMX-2-2-1850T-TAB-01-PM-01",
+
+    "XQMX-2-2-1850T-TCU-01-PM-01",
+
+    "XQMX-2-2-1850T-TCU-01-PM-02",
+
+    "XQMX-2-2-1850T-TCU-02-PM-01",
+
+    "XQMX-2-2-1850T-TCU-02-PM-02"
+
+],
+
+"XQMX-2-3-1850T": [
+
+    "XQMX-2-3-1850T-CVYR-01-PM-01",
+
+    "XQMX-2-3-1850T-PM-01",
+
+    "XQMX-2-3-1850T-PRES-01-PM-01",
+
+    "XQMX-2-3-1850T-PRO-01-PM-01",
+
+    "XQMX-2-3-1850T-ROB-01-PM-01",
+
+    "XQMX-2-3-1850T-ROB-01-PM-02",
+
+    "XQMX-2-3-1850T-ROB-02-PM-01",
+
+    "XQMX-2-3-1850T-ROB-02-PM-02",
+
+    "XQMX-2-3-1850T-ROB-03-PM-01",
+
+    "XQMX-2-3-1850T-TCU-01-PM-01",
+
+    "XQMX-2-3-1850T-TCU-01-PM-02",
+
+    "XQMX-2-3-1850T-TCU-02-PM-01",
+
+    "XQMX-2-3-1850T-TCU-02-PM-02"
+
+]
+
 }
 
-# Subir archivo
-uploaded_file = st.file_uploader("Selecciona un archivo Excel", type=["xlsx", "xls"])
+Inicializamos session_state para el DataFrame
 
-if uploaded_file is not None:
-    try:
-        # Leer archivo con pandas
-        df = pd.read_excel(uploaded_file)
-        st.write("Vista previa del archivo subido:")
-        st.dataframe(df)
+if "df_excel" not in st.session_state:
 
-        # Comparar con diccionario
-        st.write("Comparación con el diccionario de referencia:")
-        for col in dict_ref.keys():
-            if col in df.columns:
-                df[f"{col}_exists"] = df[col].isin(dict_ref[col])
-            else:
-                df[f"{col}_exists"] = False  # columna no existe en el Excel
+st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
 
-        st.dataframe(df)
+Subida de archivo
 
-        # Preparar archivo en bytes para subir a Supabase
-        uploaded_file.seek(0)
-        file_bytes = uploaded_file.read()
+--- SUBIDA DE ARCHIVO ---
 
-        # Subir archivo a Supabase Storage
-        supabase.storage.from_(BUCKET_NAME).upload(
-            "ultimo.xlsx",
-            file_bytes,
-            upsert=True
-        )
+uploaded_file = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
 
-        st.success("Archivo procesado y subido correctamente ✅")
+if uploaded_file:
 
-    except Exception as e:
-        st.error(f"Ocurrió un error al procesar o subir el archivo: {e}")
+# Eliminar archivo anterior (solo mantenemos 1)
+
+files_list = supabase.storage.from_(BUCKET_NAME).list()
+
+for f in files_list:
+
+    supabase.storage.from_(BUCKET_NAME).remove([f["name"]])
 
 
 
+# Subir el nuevo archivo
 
+supabase.storage.from_(BUCKET_NAME).upload("ultimo.xlsx", uploaded_file)
+
+st.success("Archivo subido y guardado en Supabase Storage ✅")
+
+--- LECTURA DEL ARCHIVO DESDE SUPABASE ---
+
+try:
+
+data = supabase.storage.from_(BUCKET_NAME).download("ultimo.xlsx")
+
+df = pd.read_excel(data)
+
+
+
+# Mostrar tabla con buscador
+
+st.subheader("Vista del archivo Excel")
+
+st.data_editor(df, use_container_width=True)  # permite filtros y edición ligera
+
+except Exception as e:
+
+st.info("No hay archivo guardado en Supabase. Sube uno para comenzar.")
+
+Usamos siempre el dataframe guardado en session_state
+
+df_excel = st.session_state.df_excel
+
+Filtro para elegir la máquina
+
+maquina_seleccionada = st.selectbox("Selecciona una máquina", list(maquinas.keys()))
+
+Códigos de la máquina seleccionada
+
+codigos = maquinas[maquina_seleccionada]
+
+Función para colorear estados
+
+def color_estado(val):
+
+if val == "Pendiente":
+
+    return 'background-color: #FF9999'  # rojo claro
+
+elif val == "Completado":
+
+    return 'background-color: #99FF99'  # verde claro
+
+return ''
+
+Crear dataframe cruzando con Excel
+
+df = pd.DataFrame({
+
+"Código": codigos,
+
+"Estado": [
+
+    "Completado" if (
+
+        (maquina_seleccionada in df_excel["MAQUINA"].values) and
+
+        (c in df_excel.loc[df_excel["MAQUINA"] == maquina_seleccionada, "CODIGO"].values)
+
+    ) else "Pendiente"
+
+    for c in codigos
+
+],
+
+"Fecha": [
+
+    df_excel.loc[(df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c), "FECHA"].values[0]
+
+    if ((df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c)).any()
+
+    else ""
+
+    for c in codigos
+
+]
+
+})
+
+Mostrar resultados
+
+st.subheader(maquina_seleccionada)
+
+st.dataframe(df.style.applymap(color_estado))
 
 
 
