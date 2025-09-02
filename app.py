@@ -97,10 +97,8 @@ maquinas = {
 }
 
 #Inicializamos session_state para el DataFrame
-
 if "df_excel" not in st.session_state:
-
-st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
+    st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
 
 #Subida de archivo
 
@@ -217,3 +215,4 @@ df = pd.DataFrame({
 st.subheader(maquina_seleccionada)
 
 st.dataframe(df.style.applymap(color_estado))
+
