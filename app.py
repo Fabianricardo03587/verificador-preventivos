@@ -62,12 +62,14 @@ if "autenticado" not in st.session_state:
 
 if not st.session_state.autenticado:
     st.subheader("🔐 Acceso restringido")
+    st.markdown("🔓 **Sesión iniciada correctamente**")
     clave_ingresada = st.text_input("Ingresa la clave para continuar:", type="password")
+    
     if st.button("Entrar"):
         if clave_ingresada == CLAVE_SECRETA:
             st.session_state.autenticado = True
             st.success("✅ Acceso concedido")
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.error("❌ Clave incorrecta")
     st.stop()
@@ -144,6 +146,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
