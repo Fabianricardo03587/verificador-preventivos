@@ -55,7 +55,7 @@ if "df_excel" not in st.session_state:
     st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
 
 # --- Autenticación simple por correo ---
-usuarios_autorizados = ["EMS1234", "EMS123"]
+usuarios_autorizados = ["EMS1234@ems.co", "EMS123"]
 
 if "autenticado" not in st.session_state:
     st.session_state.autenticado = False
@@ -143,6 +143,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
