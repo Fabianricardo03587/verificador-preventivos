@@ -150,49 +150,30 @@ codigos = maquinas[maquina_seleccionada]
 #Función para colorear estados
 
 def color_estado(val):
-
 if val == "Pendiente":
-
     return 'background-color: #FF9999'  # rojo claro
-
 elif val == "Completado":
-
     return 'background-color: #99FF99'  # verde claro
-
 return ''
 
 #Crear dataframe cruzando con Excel
 
 df = pd.DataFrame({
-
 "Código": codigos,
-
 "Estado": [
-
     "Completado" if (
-
         (maquina_seleccionada in df_excel["MAQUINA"].values) and
-
         (c in df_excel.loc[df_excel["MAQUINA"] == maquina_seleccionada, "CODIGO"].values)
-
     ) else "Pendiente"
-
     for c in codigos
-
 ],
 
 "Fecha": [
-
     df_excel.loc[(df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c), "FECHA"].values[0]
-
     if ((df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c)).any()
-
     else ""
-
     for c in codigos
-
 ]
-
 })
 
 #Mostrar resultados
@@ -200,5 +181,6 @@ df = pd.DataFrame({
 st.subheader(maquina_seleccionada)
 
 st.dataframe(df.style.applymap(color_estado))
+
 
 
