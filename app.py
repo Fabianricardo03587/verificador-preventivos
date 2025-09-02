@@ -107,16 +107,11 @@ if "df_excel" not in st.session_state:
 
 uploaded_file = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
 
-if uploaded_file:
-
-    
-
 # Eliminar archivo anterior (solo mantenemos 1)
 
-files_list = supabase.storage.from_(BUCKET_NAME).list()
-
+if uploaded_file: 
+    files_list = supabase.storage.from_(BUCKET_NAME).list()
 for f in files_list:
-
     supabase.storage.from_(BUCKET_NAME).remove([f["name"]])
 
 
@@ -130,29 +125,19 @@ st.success("Archivo subido y guardado en Supabase Storage ✅")
 
 
 #--- LECTURA DEL ARCHIVO DESDE SUPABASE ---
-
 try:
     data = supabase.storage.from_(BUCKET_NAME).download("ultimo.xlsx")
     df_excel = pd.read_excel(data)
     st.session_state.df_excel = df_excel  # <- aquí guardamos el Excel en session_state
+
+    # Mostrar tabla con buscador
+    st.subheader("Vista del archivo Excel")
+    st.data_editor(df_excel, use_container_width=True)  # permite filtros y edición ligera
+
 except Exception as e:
     st.info("No hay archivo guardado en Supabase. Sube uno para comenzar.")
     df_excel = st.session_state.df_excel
 
-
-# Mostrar tabla con buscador
-
-st.subheader("Vista del archivo Excel")
-
-st.data_editor(df, use_container_width=True)  # permite filtros y edición ligera
-
-except Exception as e:
-
-st.info("No hay archivo guardado en Supabase. Sube uno para comenzar.")
-
-#Usamos siempre el dataframe guardado en session_state
-
-df_excel = st.session_state.df_excel
 
 #Filtro para elegir la máquina
 
@@ -215,4 +200,5 @@ df = pd.DataFrame({
 st.subheader(maquina_seleccionada)
 
 st.dataframe(df.style.applymap(color_estado))
+
 
