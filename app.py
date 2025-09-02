@@ -16,11 +16,11 @@ BUCKET_NAME = "archivos-excel"  # Asegúrate de crear este bucket en Supabase St
 
 st.title("Verificador de Preventivos V2.0 🚀")
 
--------------------------------
+#-------------------------------
 
 Datos fijos por máquina y preventivos
 
--------------------------------
+#-------------------------------
 
 maquinas = {
 
@@ -105,7 +105,7 @@ st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
 Subida de archivo
 
 
---- SUBIDA DE ARCHIVO ---
+#--- SUBIDA DE ARCHIVO ---
 
 uploaded_file = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
 
@@ -131,7 +131,7 @@ st.success("Archivo subido y guardado en Supabase Storage ✅")
 
 
 
---- LECTURA DEL ARCHIVO DESDE SUPABASE ---
+#--- LECTURA DEL ARCHIVO DESDE SUPABASE ---
 
 try:
     data = supabase.storage.from_(BUCKET_NAME).download("ultimo.xlsx")
@@ -217,6 +217,7 @@ Mostrar resultados
 st.subheader(maquina_seleccionada)
 
 st.dataframe(df.style.applymap(color_estado))
+
 
 
 
