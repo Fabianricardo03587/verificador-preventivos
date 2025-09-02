@@ -54,6 +54,23 @@ maquinas = {
 if "df_excel" not in st.session_state:
     st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
 
+# --- Autenticación simple por correo ---
+usuarios_autorizados = ["fabianricardo03587@gmail.com", "mantenimiento@empresa.com"]
+
+if "autenticado" not in st.session_state:
+    st.session_state.autenticado = False
+
+if not st.session_state.autenticado:
+    st.subheader("🔐 Autenticación requerida")
+    correo = st.text_input("Introduce tu correo electrónico")
+    if st.button("Iniciar sesión"):
+        if correo in usuarios_autorizados:
+            st.session_state.autenticado = True
+            st.success("¡Acceso concedido!")
+        else:
+            st.error("Acceso denegado. Correo no autorizado.")
+    st.stop()  # Detiene la ejecución hasta que el usuario se autentique
+
 #--- SUBIDA DE ARCHIVO ---
 uploaded_file = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
 
@@ -82,10 +99,6 @@ try:
     data = supabase.storage.from_(BUCKET_NAME).download("ultimo.xlsx")
     df_excel = pd.read_excel(data)
     st.session_state.df_excel = df_excel  # Guardamos el Excel en session_state
-
-    # Mostrar tabla original subida
-    st.subheader("Vista del archivo Excel")
-    st.data_editor(df_excel, use_container_width=True)  # permite filtros y edición ligera
 
 except Exception as e:
     st.info("No hay archivo guardado en Supabase. Sube uno para comenzar.")
@@ -125,6 +138,11 @@ df = pd.DataFrame({
 st.subheader(maquina_seleccionada)
 st.dataframe(df.style.applymap(color_estado), use_container_width=True)
 
+
+if st.session_state.autenticado:
+    if st.button("Cerrar sesión"):
+        st.session_state.autenticado = False
+        st.experimental_rerun()
 
 
 
