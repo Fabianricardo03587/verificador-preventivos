@@ -96,7 +96,7 @@ maquinas = {
 
 }
 
-Inicializamos session_state para el DataFrame
+#Inicializamos session_state para el DataFrame
 
 if "df_excel" not in st.session_state:
 
@@ -217,6 +217,7 @@ df = pd.DataFrame({
 st.subheader(maquina_seleccionada)
 
 st.dataframe(df.style.applymap(color_estado))
+
 
 
 
