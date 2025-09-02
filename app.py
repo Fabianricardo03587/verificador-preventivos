@@ -4,7 +4,7 @@ from supabase import create_client, Client
 
 #--- CONFIGURACION DE SUPABASE ---
 SUPABASE_URL = "https://wubnausfadmzqqlregzh.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind1Ym5hdXNmYWRtenFxbHJlZ3poIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY3NDg4MjEsImV4cCI6MjA3MjMyNDgyMX0.rEblj4SSJv3oca4cVKVvVM7eoDo5HpBKwyW5coF1WBs"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind1Ym5hdXNmYWRtenFxbHJlZ3poIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1Njc0ODgyMSwiZXhwIjoyMDcyMzI0ODIxfQ.SDFxFyJYN2KJAlWl0foNhoSqSbXHuNJ9jQ5swbMdf5s"
 BUCKET_NAME = "archivos-excel"
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -124,6 +124,7 @@ df = pd.DataFrame({
 #--- MOSTRAR RESULTADOS ---
 st.subheader(maquina_seleccionada)
 st.dataframe(df.style.applymap(color_estado), use_container_width=True)
+
 
 
 
