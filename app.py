@@ -54,22 +54,23 @@ maquinas = {
 if "df_excel" not in st.session_state:
     st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
 
-# --- Autenticación simple por correo ---
-usuarios_autorizados = ["EMS1234@ems.co", "EMS123"]
+# --- Autenticación simple por clave ---
+CLAVE_SECRETA = "ems2025"  # ← Puedes cambiarla por la que tú quieras
 
 if "autenticado" not in st.session_state:
     st.session_state.autenticado = False
 
 if not st.session_state.autenticado:
-    st.subheader("🔐 Autenticación requerida v2.0")
-    correo = st.text_input("Introduce tu correo electrónico")
-    if st.button("Iniciar sesión"):
-        if correo in usuarios_autorizados:
+    st.subheader("🔐 Acceso restringido")
+    clave_ingresada = st.text_input("Ingresa la clave para continuar:", type="password")
+    if st.button("Entrar"):
+        if clave_ingresada == CLAVE_SECRETA:
             st.session_state.autenticado = True
-            st.success("¡Acceso concedido!")
+            st.success("✅ Acceso concedido")
+            st.experimental_rerun()
         else:
-            st.error("Acceso denegado. Correo no autorizado.")
-    st.stop()  # Detiene la ejecución hasta que el usuario se autentique
+            st.error("❌ Clave incorrecta")
+    st.stop()
 
 #--- SUBIDA DE ARCHIVO ---
 uploaded_file = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
@@ -143,6 +144,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
