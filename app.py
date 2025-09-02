@@ -69,7 +69,7 @@ if uploaded_file:
         supabase.storage.from_(BUCKET_NAME).upload(
             "ultimo.xlsx", 
             uploaded_file.getvalue(), 
-            file_options={"upsert": True}
+            file_options={"upsert": "true"}
         )
         st.success("Archivo subido y guardado en Supabase Storage ✅")
     except Exception as e:
@@ -124,6 +124,7 @@ df = pd.DataFrame({
 #--- MOSTRAR RESULTADOS ---
 st.subheader(maquina_seleccionada)
 st.dataframe(df.style.applymap(color_estado), use_container_width=True)
+
 
 
 
