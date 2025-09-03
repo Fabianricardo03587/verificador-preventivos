@@ -138,6 +138,17 @@ df = pd.DataFrame({
     ]
 })
 
+# --- CONTADORES ---
+total = len(df)
+completados = (df["Estado"] == "Completado").sum()
+pendientes = total - completados
+avance = round((completados / total) * 100, 1)
+
+col1, col2, col3 = st.columns(3)
+col1.metric("✅ Completados", completados)
+col2.metric("⌛ Pendientes", pendientes)
+col3.metric("📊 Avance", f"{avance} %")
+
 #--- MOSTRAR RESULTADOS ---
 st.subheader(maquina_seleccionada)
 st.dataframe(df.style.applymap(color_estado), use_container_width=True)
@@ -147,6 +158,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
