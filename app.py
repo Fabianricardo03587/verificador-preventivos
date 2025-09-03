@@ -3,9 +3,9 @@ import pandas as pd
 from supabase import create_client, Client
 
 #--- CONFIGURACION DE SUPABASE ---
-SUPABASE_URL = "https://wubnausfadmzqqlregzh.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind1Ym5hdXNmYWRtenFxbHJlZ3poIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1Njc0ODgyMSwiZXhwIjoyMDcyMzI0ODIxfQ.SDFxFyJYN2KJAlWl0foNhoSqSbXHuNJ9jQ5swbMdf5s"
-BUCKET_NAME = "archivos-excel"
+SUPABASE_URL = st.secrets["SUPABASE_URL"]
+SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
+CLAVE_SECRETA = st.secrets["CLAVE_SECRETA"]
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
@@ -151,6 +151,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
