@@ -130,6 +130,25 @@ completados_global = sum(
     if (str(maq).strip(), str(c).strip()) in pares_hechos
 )
 
+pendientes_global = total_planificados - completados_global
+avance_global = round((completados_global / total_planificados) * 100, 1) if total_planificados else 0.0
+
+cG1, cG2, cG3, cG4 = st.columns(4)
+cG1.metric("✅ Completados (global)", completados_global)
+cG2.metric("🗂️ Planificados (global)", total_planificados)
+cG3.metric("📊 Avance (global)", f"{avance_global}%")
+cG4.metric("⌛ Pendientes (global)", pendientes_global)
+
+# Comparación contra tu meta
+if completados_global >= meta_preventivos:
+    st.success(f"✅ Meta alcanzada ({completados_global}/{meta_preventivos})")
+else:
+    st.warning(f"⚠️ Faltan {meta_preventivos - completados_global} para la meta ({completados_global}/{meta_preventivos})")
+# ========= FIN CONTADOR GENERAL =========
+
+
+
+
 #--- SELECCIÓN DE MÁQUINA ---
 maquina_seleccionada = st.selectbox("Selecciona una máquina", list(maquinas.keys()))
 codigos = maquinas[maquina_seleccionada]
@@ -180,6 +199,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
