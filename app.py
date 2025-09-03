@@ -5,7 +5,8 @@ from supabase import create_client, Client
 #--- CONFIGURACION DE SUPABASE ---
 SUPABASE_URL = st.secrets["SUPABASE_URL"]
 SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
-CLAVE_SECRETA = st.secrets["CLAVE_SECRETA"]
+BUCKET_NAME = "archivos-excel"
+
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
@@ -55,7 +56,7 @@ if "df_excel" not in st.session_state:
     st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
 
 # --- Autenticación simple por clave ---
-CLAVE_SECRETA = "ems2025"  # ← Puedes cambiarla por la que tú quieras
+CLAVE_SECRETA = st.secrets["CLAVE_SECRETA"]
 
 if "autenticado" not in st.session_state:
     st.session_state.autenticado = False
