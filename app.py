@@ -12,27 +12,6 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 st.title("Verificador de Preventivos V2.0 🚀")
 
-# --- Valor de referencia (meta definida por el usuario) ---
-meta_preventivos = st.number_input("Ingresa la meta de preventivos", min_value=0, value=50)
-
-# --- Consulta a Supabase: contar preventivos completados ---
-data = supabase.table("preventivos").select("id", "maquina", "status").execute()
-
-# Filtramos solo los que estén completados (ajusta si tu campo es distinto)
-preventivos = data.data
-completados = [p for p in preventivos if p["status"] == "completado"]
-
-contador_general = len(completados)
-
-# --- Mostrar resultados ---
-st.metric("Preventivos Completados", contador_general)
-st.metric("Meta de Preventivos", meta_preventivos)
-
-# Comparación
-if contador_general >= meta_preventivos:
-    st.success(f"✅ Meta alcanzada ({contador_general}/{meta_preventivos})")
-else:
-    st.warning(f"⚠️ Aún faltan {meta_preventivos - contador_general} para la meta ({contador_general}/{meta_preventivos})")
 
 #--- DATOS FIJOS POR MÁQUINA Y PREVENTIVOS ---
 maquinas = {
@@ -130,6 +109,29 @@ except Exception as e:
     st.info("No hay archivo guardado en Supabase. Sube uno para comenzar.")
     df_excel = st.session_state.df_excel
 
+# --- Valor de referencia (meta definida por el usuario) ---
+meta_preventivos = 53
+
+# --- Consulta a Supabase: contar preventivos completados ---
+data = supabase.table("preventivos").select("id", "maquina", "status").execute()
+
+# Filtramos solo los que estén completados (ajusta si tu campo es distinto)
+preventivos = data.data
+completados = [p for p in preventivos if p["status"] == "completado"]
+
+contador_general = len(completados)
+
+# --- Mostrar resultados ---
+st.metric("Preventivos Completados", contador_general)
+st.metric("Meta de Preventivos", meta_preventivos)
+
+# Comparación
+if contador_general >= meta_preventivos:
+    st.success(f"✅ Meta alcanzada ({contador_general}/{meta_preventivos})")
+else:
+    st.warning(f"⚠️ Aún faltan {meta_preventivos - contador_general} para la meta ({contador_general}/{meta_preventivos})")
+
+
 #--- SELECCIÓN DE MÁQUINA ---
 maquina_seleccionada = st.selectbox("Selecciona una máquina", list(maquinas.keys()))
 codigos = maquinas[maquina_seleccionada]
@@ -180,6 +182,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
