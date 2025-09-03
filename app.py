@@ -112,25 +112,23 @@ except Exception as e:
 # --- Valor de referencia (meta definida por el usuario) ---
 meta_preventivos = 53
 
-# --- Consulta a Supabase: contar preventivos completados ---
-data = supabase.table("preventivos").select("id", "maquina", "status").execute()
-
-# Filtramos solo los que estén completados (ajusta si tu campo es distinto)
-preventivos = data.data
-completados = [p for p in preventivos if p["status"] == "completado"]
-
-contador_general = len(completados)
-
-# --- Mostrar resultados ---
-st.metric("Preventivos Completados", contador_general)
-st.metric("Meta de Preventivos", meta_preventivos)
-
-# Comparación
-if contador_general >= meta_preventivos:
-    st.success(f"✅ Meta alcanzada ({contador_general}/{meta_preventivos})")
+# Normalizamos y construimos el set de pares (MAQUINA, CODIGO) encontrados en el Excel
+if not df_excel.empty and {"MAQUINA","CODIGO"}.issubset(df_excel.columns):
+    pares_hechos = set(
+        zip(
+            df_excel["MAQUINA"].astype(str).str.strip(),
+            df_excel["CODIGO"].astype(str).str.strip()
+        )
+    )
 else:
-    st.warning(f"⚠️ Aún faltan {meta_preventivos - contador_general} para la meta ({contador_general}/{meta_preventivos})")
+    pares_hechos = set()
 
+# Totales planificados (según diccionario) y completados (según Excel)
+total_planificados = sum(len(lst) for lst in maquinas.values())
+completados_global = sum(
+    1 for maq, cods in maquinas.items() for c in cods
+    if (str(maq).strip(), str(c).strip()) in pares_hechos
+)
 
 #--- SELECCIÓN DE MÁQUINA ---
 maquina_seleccionada = st.selectbox("Selecciona una máquina", list(maquinas.keys()))
@@ -182,6 +180,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
