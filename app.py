@@ -73,11 +73,6 @@ if not st.session_state.autenticado:
         else:
             st.error("❌ Clave incorrecta")
     st.stop()
-    
-#--- CONTADOR DE PREVES ---
-total = len(df)
-completados = (df["Estado"] == "Completado").sum()
-st.metric("Avance", f"{completados}/{total}", f"{round(completados/total*100,1)}%")
 
 #--- SUBIDA DE ARCHIVO ---
 uploaded_file = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
@@ -151,6 +146,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
