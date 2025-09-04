@@ -33,19 +33,39 @@ if not st.session_state.autenticado:
     st.markdown("""
         <style>
         /* --- Estilos SOLO para la pantalla de login --- */
+
+        .block-container {
+            max-width: 40%;
+            padding-top: 1rem;
+        }
+        
         .stTextInput > div > div > input {
             width: 300px;
             font-size: 20px;
             text-align: center;
         }
+        
         .stButton > button {
-            width: 200px;
-            height: 50px;
+            width: 150px;
+            height: 40px;
             font-size: 18px;
             border-radius: 12px;
             background-color: #1976d2;
             color: white;
         }
+        
+        /* Cuando paso el mouse (hover) */
+        .stButton > button:hover {
+            background-color: #1565c0; /* azul más oscuro */
+            transform: scale(1.03); /* efecto zoom suave */
+        }
+
+        /* Cuando hago click (active) */
+        .stButton > button:active {
+            background-color: #0d47a1; /* azul más fuerte */
+            transform: scale(0.97); /* se achica un poco */
+        }
+
         </style>
     """, unsafe_allow_html=True)
     # Tu código de login aquí...
@@ -268,6 +288,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
