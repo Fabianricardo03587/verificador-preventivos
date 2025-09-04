@@ -36,7 +36,7 @@ if not st.session_state.autenticado:
 
         .block-container {
             max-width: 40%;
-            padding-top: 1rem;
+            padding-top: 2rem;
         }
         
         .stTextInput > div > div > input {
@@ -288,6 +288,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
