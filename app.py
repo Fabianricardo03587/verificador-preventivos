@@ -210,6 +210,11 @@ col2.metric("⌛ Pendientes", pendientes)
 col3.metric("📊 Avance", f"{avance} %")
 
 #--- MOSTRAR RESULTADOS ---
+
+# Eliminamos la columna "MAQUINA" (ya está en el buscador)
+if "MAQUINA" in df.columns:
+    df = df.drop(columns=["MAQUINA"])
+
 st.subheader(maquina_seleccionada)
 st.dataframe(df.style.applymap(color_estado), use_container_width=True)
 
@@ -218,6 +223,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
