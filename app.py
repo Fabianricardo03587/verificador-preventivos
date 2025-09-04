@@ -137,12 +137,6 @@ with st.expander("⚙️ Configuración de Meta (solo administradores)"):
 
 
 
-
-
-
-
-#meta_preventivos = 53
-
 # Normalizamos y construimos el set de pares (MAQUINA, CODIGO) encontrados en el Excel
 if not df_excel.empty and {"MAQUINA","CODIGO"}.issubset(df_excel.columns):
     pares_hechos = set(
@@ -171,10 +165,10 @@ cG3.metric("📊 Avance (Al plan)", f"{avance_global}%")
 cG4.metric("⌛ Pendientes (Al plan)", pendientes_global)
 
 # Comparación contra tu meta
-if completados_global >= meta_preventivos:
-    st.success(f"✅ Meta alcanzada ({completados_global}/{meta_preventivos})")
+if completados_global >= st.session_state.meta_preventivos:
+    st.success(f"✅ Meta alcanzada ({completados_global}/{st.session_state.meta_preventivos})")
 else:
-    st.warning(f"⚠️ Faltan {meta_preventivos - completados_global} para la meta ({completados_global}/{meta_preventivos})")
+    st.warning(f"⚠️ Faltan {st.session_state.meta_preventivos - completados_global} para la meta ({completados_global}/{st.session_state.meta_preventivos})")
 # ========= FIN CONTADOR GENERAL =========
 
 
@@ -230,6 +224,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
