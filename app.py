@@ -66,17 +66,21 @@ if not st.session_state.autenticado:
 else: 
       st.markdown("""
         <style>
-        /* --- Estilos SOLO para la pantalla principal --- */
-        .stDataFrame {
-            border: 2px solid #1976d2;
-            border-radius: 10px;
+        .block-container {
+            max-width: 90%;
+            padding-top: 1rem;
         }
-        .stMetric {
-            font-size: 18px;
+        h1, h2, h3 {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .stDataFrame {
+            font-size: 14px;
         }
         </style>
     """, unsafe_allow_html=True)
-    # Aquí sigue tu página principal
+
+    # Aquí todo tu contenido de tablas, buscadores, etc.
 
 
 
@@ -264,6 +268,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
