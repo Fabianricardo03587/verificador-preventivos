@@ -10,7 +10,7 @@ BUCKET_NAME = "archivos-excel"
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-st.title("Verificador de Preventivos V2.0 🚀")
+st.title("Verificador de Preventivos EMS 🚀")
 
 
 #--- DATOS FIJOS POR MÁQUINA Y PREVENTIVOS ---
@@ -224,6 +224,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
