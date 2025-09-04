@@ -155,12 +155,12 @@ completados_global = sum(
     if (str(maq).strip(), str(c).strip()) in pares_hechos
 )
 
-pendientes_global = total_planificados - completados_global
-avance_global = round((completados_global / total_planificados) * 100, 1) if total_planificados else 0.0
+pendientes_global = st.session_state.meta_preventivos - completados_global
+avance_global = round((completados_global / st.session_state.meta_preventivos) * 100, 1) if total_planificados else 0.0
 
 cG1, cG2, cG3, cG4 = st.columns(4)
 cG1.metric("✅ Completados", completados_global)
-cG2.metric("🗂️ Planificados", total_planificados)
+cG2.metric("🗂️ Planificados", st.session_state.meta_preventivos)
 cG3.metric("📊 Avance (Al plan)", f"{avance_global}%")
 cG4.metric("⌛ Pendientes (Al plan)", pendientes_global)
 
@@ -224,6 +224,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
