@@ -115,7 +115,7 @@ except Exception as e:
 
 # --- Valor de referencia (meta de preventivos) ---
 if "meta_preventivos" not in st.session_state:
-    st.session_state.meta_preventivos = 53  # valor inicial
+    st.session_state.meta_preventivos = st.session_state.meta_preventivos  # valor inicial
 
 st.metric("Meta de Preventivos", st.session_state.meta_preventivos)
 CLAVE_ADMIN = "admin123"
@@ -224,6 +224,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
