@@ -117,15 +117,22 @@ if not df_excel.empty and {"MAQUINA","CODIGO"}.issubset(df_excel.columns):
 else:
     pares_hechos = set()
 
-# Totales planificados (según diccionario) y completados (según Excel)
-total_planificados = sum(len(lst) for lst in maquinas.values())
+
+
+# Totales planificados (según el Excel maestro)
+total_planificados = len(df_maestro)
+
+# Completados global (cruce con el Excel de registros)
 completados_global = sum(
-    1 for maq, cods in maquinas.items() for c in cods
-    if (str(maq).strip(), str(c).strip()) in pares_hechos
+    1 for _, row in df_maestro.iterrows()
+    if (str(row["MAQUINA"]).strip(), str(row["CODIGO"]).strip()) in pares_hechos
 )
 
-pendientes_global = st.session_state.meta_preventivos - completados_global
-avance_global = round((completados_global / st.session_state.meta_preventivos) * 100, 1) if total_planificados else 0.0
+pendientes_global = total_planificados - completados_global
+avance_global = round((completados_global / total_planificados) * 100, 1) if total_planificados else 0.0
+
+
+
 
 cG1, cG2, cG3, cG4 = st.columns(4)
 cG1.metric("✅ Completados", completados_global)
@@ -205,6 +212,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
