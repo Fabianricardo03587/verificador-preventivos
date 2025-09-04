@@ -276,8 +276,8 @@ def color_estado(val):
 #--- CRUCE DE DATOS CON EL EXCEL ---
 df = pd.DataFrame({
     "Código": codigos,
-    "Nombre": nombre_codigo,
-    "Responsable": responsable_codigo,
+    "Nombre": nombre_01codigo,
+    "Responsable": responsable_01codigo,
     "Estado": [
         "Completado" if (
             (maquina_seleccionada in df_excel["MAQUINA"].values) and
@@ -313,6 +313,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
