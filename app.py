@@ -18,6 +18,15 @@ st.title("Verificador de Preventivos EMS 🚀")
 #--- DATOS FIJOS POR MÁQUINA Y PREVENTIVOS ---
 
 
+# --- LECTURA DEL ARCHIVO MAESTRO (datos fijos: máquinas, códigos, responsables) ---
+BUCKET_FIJO = "datos_fijos"       # donde ya tienes maquinas_codigos.xlsx
+try:
+    data_maestro = supabase.storage.from_(BUCKET_FIJO).download("maquinas_codigos.xlsx")
+    df_maestro = pd.read_excel(data_maestro)
+except Exception as e:
+    st.error("❌ No se pudo cargar el archivo maestro (maquinas_codigos.xlsx).")
+    st.stop()
+
 
 
 
@@ -212,6 +221,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
