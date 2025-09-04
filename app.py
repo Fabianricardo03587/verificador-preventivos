@@ -12,32 +12,8 @@ BUCKET_NAME = "archivos-excel"
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-st.set_page_config(
-    page_title="Verificador de Preventivos EMS 🚀",
-    layout="wide",   # <- ocupa todo el ancho de la pantalla
-    initial_sidebar_state="expanded"
-)
 
 st.title("Verificador de Preventivos EMS 🚀")
-
-# --- Reducir márgenes de Streamlit con CSS ---
-st.markdown(
-    """
-    <style>
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 1rem;
-        padding-left: 30rem;
-        padding-right: 30rem;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-
-
-
 
 
 
@@ -275,6 +251,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
