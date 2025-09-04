@@ -110,7 +110,7 @@ except Exception as e:
     df_excel = st.session_state.df_excel
 
 # --- Valor de referencia (meta definida por el usuario) ---
-CLAVE_ADMIN = "1q2w3e"
+#CLAVE_ADMIN = "1q2w3e"
 
     
 # --- Valor de referencia (meta de preventivos) ---
@@ -132,7 +132,7 @@ with st.expander("⚙️ Configuración de Meta (solo administradores)"):
     nueva_meta = st.number_input("Nueva meta de preventivos:", min_value=0, value=st.session_state.meta_preventivos, step=1)
 
     if st.button("Actualizar Meta"):
-        if clave_admin_ingresada == st.secrets["CLAVE_ADMIN"]:
+        if clave_admin_ingresada == "1q2w3e"
             st.session_state.meta_preventivos = nueva_meta
             st.success(f"✅ Meta actualizada a {nueva_meta}")
         else:
@@ -235,6 +235,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
