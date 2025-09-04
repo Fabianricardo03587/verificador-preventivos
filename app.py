@@ -49,7 +49,7 @@ if not st.session_state.autenticado:
             width: 150px;
             height: 40px;
             font-size: 18px;
-            border-radius: 12px;
+            border-radius: 10px;
             background-color: #1976d2;
             color: white;
         }
@@ -288,6 +288,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
