@@ -52,6 +52,91 @@ maquinas = {
     ]
 }
 
+nombre_codigo = {
+
+     "XQMX-2-1-1850T": [
+        "CONVEYOR",
+        "MAQUINA DE INYECCION",
+        "PRENSA DE TERMOFORMADO",
+        "ROBOT FANUC 2000 MENSUAL",
+        "ROBOT FANUC 2000 ANUAL",
+        "TCU MENSUAL"
+    ],
+    "XQMX-2-2-1850T": [
+        "CONVEYOR",
+        "MAQUINA DE INYECCION",
+        "ROBOT FANUC 2000 MENSUAL",
+        "ROBOT FANUC 2000 ANUAL",
+        "ROBOT DE FLAMA MENSUAL",
+        "ROBOT DE FLAMA ANUAL",
+        "TCU #1 MENSUAL",
+        "TCU #1 ANUAL",
+        "TCU #2 MENSUAL",
+        "TCU #2 ANUAL"
+    ],
+    "XQMX-2-3-1850T": [
+        "XQMX-2-3-1850T-CVYR-01-PM-01",
+        "XQMX-2-3-1850T-PM-01",
+        "XQMX-2-3-1850T-PRES-01-PM-01",
+        "XQMX-2-3-1850T-PRO-01-PM-01",
+        "XQMX-2-3-1850T-ROB-01-PM-01",
+        "XQMX-2-3-1850T-ROB-01-PM-02",
+        "XQMX-2-3-1850T-ROB-02-PM-01",
+        "XQMX-2-3-1850T-ROB-02-PM-02",
+        "XQMX-2-3-1850T-ROB-03-PM-01",
+        "XQMX-2-3-1850T-TCU-01-PM-01",
+        "XQMX-2-3-1850T-TCU-01-PM-02",
+        "XQMX-2-3-1850T-TCU-02-PM-01",
+        "XQMX-2-3-1850T-TCU-02-PM-02"
+    ]
+
+    
+}
+
+responsable_codigo = {
+
+     "XQMX-2-1-1850T": [
+        "Rafa",
+        "Rafa",
+        "Rafa",
+        "Rafa",
+        "Rafa",
+        "Rafa"
+    ],
+    "XQMX-2-2-1850T": [
+        "Dany",
+        "Dany",
+        "Dany",
+        "Dany",
+        "Dany",
+        "Dany",
+        "Dany",
+        "Dany",
+        "Dany",
+        "Dany"
+    ],
+    "XQMX-2-3-1850T": [
+        "XQMX-2-3-1850T-CVYR-01-PM-01",
+        "XQMX-2-3-1850T-PM-01",
+        "XQMX-2-3-1850T-PRES-01-PM-01",
+        "XQMX-2-3-1850T-PRO-01-PM-01",
+        "XQMX-2-3-1850T-ROB-01-PM-01",
+        "XQMX-2-3-1850T-ROB-01-PM-02",
+        "XQMX-2-3-1850T-ROB-02-PM-01",
+        "XQMX-2-3-1850T-ROB-02-PM-02",
+        "XQMX-2-3-1850T-ROB-03-PM-01",
+        "XQMX-2-3-1850T-TCU-01-PM-01",
+        "XQMX-2-3-1850T-TCU-01-PM-02",
+        "XQMX-2-3-1850T-TCU-02-PM-01",
+        "XQMX-2-3-1850T-TCU-02-PM-02"
+    ]
+
+    
+}
+
+
+
+
 #--- INICIALIZAMOS session_state ---
 if "df_excel" not in st.session_state:
     st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
@@ -177,6 +262,8 @@ else:
 #--- SELECCIÓN DE MÁQUINA ---
 maquina_seleccionada = st.selectbox("Selecciona una máquina", list(maquinas.keys()))
 codigos = maquinas[maquina_seleccionada]
+nombre_01codigo = nombre_codigo[maquina_seleccionada]
+responsable_01codigo = responsable_codigo[maquina_seleccionada]
 
 #--- FUNCIÓN PARA COLOREAR ESTADO ---
 def color_estado(val):
@@ -189,6 +276,8 @@ def color_estado(val):
 #--- CRUCE DE DATOS CON EL EXCEL ---
 df = pd.DataFrame({
     "Código": codigos,
+    "Nombre": nombre_codigo,
+    "Responsable": responsable_codigo,
     "Estado": [
         "Completado" if (
             (maquina_seleccionada in df_excel["MAQUINA"].values) and
@@ -224,6 +313,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
