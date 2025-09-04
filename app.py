@@ -13,26 +13,8 @@ BUCKET_NAME = "archivos-excel"
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
-st.title("Verificador de Preventivos EMS 🚀")
-
-
-
-
-
-
-
 
 #--- DATOS FIJOS POR MÁQUINA Y PREVENTIVOS ---
-
-
-# --- LECTURA DEL ARCHIVO MAESTRO (datos fijos: máquinas, códigos, responsables) ---
-BUCKET_FIJO = "datos_fijos"       # donde ya tienes maquinas_codigos.xlsx
-try:
-    data_maestro = supabase.storage.from_(BUCKET_FIJO).download("maquinas_codigos.xlsx")
-    df_maestro = pd.read_excel(data_maestro)
-except Exception as e:
-    st.error("❌ No se pudo cargar el archivo maestro (maquinas_codigos.xlsx).")
-    st.stop()
 
 
 
@@ -67,7 +49,6 @@ if not st.session_state.autenticado:
         </style>
     """, unsafe_allow_html=True)
     # Tu código de login aquí...
-
     
     st.subheader("🔐 Acceso restringido")
     st.markdown("🔓 **Sesión iniciada correctamente**")
@@ -81,6 +62,38 @@ if not st.session_state.autenticado:
         else:
             st.error("❌ Clave incorrecta")
     st.stop()
+
+else: 
+      st.markdown("""
+        <style>
+        /* --- Estilos SOLO para la pantalla principal --- */
+        .stDataFrame {
+            border: 2px solid #1976d2;
+            border-radius: 10px;
+        }
+        .stMetric {
+            font-size: 18px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+    # Aquí sigue tu página principal
+
+
+
+
+st.title("Verificador de Preventivos EMS 🚀")
+
+
+# --- LECTURA DEL ARCHIVO MAESTRO (datos fijos: máquinas, códigos, responsables) ---
+BUCKET_FIJO = "datos_fijos"       # donde ya tienes maquinas_codigos.xlsx
+try:
+    data_maestro = supabase.storage.from_(BUCKET_FIJO).download("maquinas_codigos.xlsx")
+    df_maestro = pd.read_excel(data_maestro)
+except Exception as e:
+    st.error("❌ No se pudo cargar el archivo maestro (maquinas_codigos.xlsx).")
+    st.stop()
+
+
 
 #--- SUBIDA DE ARCHIVO ---
 uploaded_file = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
@@ -251,6 +264,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
