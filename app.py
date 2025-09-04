@@ -67,7 +67,7 @@ else:
       st.markdown("""
         <style>
         .block-container {
-            max-width: 60%;
+            max-width: 50%;
             padding-top: 1rem;
         }
         h1, h2, h3 {
@@ -268,6 +268,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
