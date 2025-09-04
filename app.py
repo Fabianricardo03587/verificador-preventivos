@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 from supabase import create_client, Client
+from io import BytesIO
+
 
 #--- CONFIGURACION DE SUPABASE ---
 SUPABASE_URL = st.secrets["SUPABASE_URL"]
@@ -14,125 +16,7 @@ st.title("Verificador de Preventivos EMS 🚀")
 
 
 #--- DATOS FIJOS POR MÁQUINA Y PREVENTIVOS ---
-maquinas = {
-    "XQMX-2-1-1850T": [
-        "XQMX-2-1-1850T-CVYR-01-PM-01",
-        "XQMX-2-1-1850T-PM-01",
-        "XQMX-2-1-1850T-PRES-01-PM-01",
-        "XQMX-2-1-1850T-ROB-01-PM-01",
-        "XQMX-2-1-1850T-ROB-01-PM-02",
-        "XQMX-2-1-1850T-TCU-01-PM-01"
-    ],
-    "XQMX-2-2-1850T": [
-        "XQMX-2-2-1850T-CVYR-01-PM-01",
-        "XQMX-2-2-1850T-PM-01",
-        "XQMX-2-2-1850T-ROB-01-PM-02",
-        "XQMX-2-2-1850T-ROB-02-PM-01",
-        "XQMX-2-2-1850T-ROB-02-PM-02",
-        "XQMX-2-2-1850T-TAB-01-PM-01",
-        "XQMX-2-2-1850T-TCU-01-PM-01",
-        "XQMX-2-2-1850T-TCU-01-PM-02",
-        "XQMX-2-2-1850T-TCU-02-PM-01",
-        "XQMX-2-2-1850T-TCU-02-PM-02"
-    ],
-    "XQMX-2-3-1850T": [
-        "XQMX-2-3-1850T-CVYR-01-PM-01",
-        "XQMX-2-3-1850T-PM-01",
-        "XQMX-2-3-1850T-PRES-01-PM-01",
-        "XQMX-2-3-1850T-PRO-01-PM-01",
-        "XQMX-2-3-1850T-ROB-01-PM-01",
-        "XQMX-2-3-1850T-ROB-01-PM-02",
-        "XQMX-2-3-1850T-ROB-02-PM-01",
-        "XQMX-2-3-1850T-ROB-02-PM-02",
-        "XQMX-2-3-1850T-ROB-03-PM-01",
-        "XQMX-2-3-1850T-TCU-01-PM-01",
-        "XQMX-2-3-1850T-TCU-01-PM-02",
-        "XQMX-2-3-1850T-TCU-02-PM-01",
-        "XQMX-2-3-1850T-TCU-02-PM-02"
-    ]
-}
 
-nombre_codigo = {
-
-     "XQMX-2-1-1850T": [
-        "CONVEYOR",
-        "MAQUINA DE INYECCION",
-        "PRENSA DE TERMOFORMADO",
-        "ROBOT FANUC 2000 MENSUAL",
-        "ROBOT FANUC 2000 ANUAL",
-        "TCU MENSUAL"
-    ],
-    "XQMX-2-2-1850T": [
-        "CONVEYOR",
-        "MAQUINA DE INYECCION",
-        "ROBOT FANUC 2000 MENSUAL",
-        "ROBOT FANUC 2000 ANUAL",
-        "ROBOT DE FLAMA MENSUAL",
-        "ROBOT DE FLAMA ANUAL",
-        "TCU #1 MENSUAL",
-        "TCU #1 ANUAL",
-        "TCU #2 MENSUAL",
-        "TCU #2 ANUAL"
-    ],
-    "XQMX-2-3-1850T": [
-        "XQMX-2-3-1850T-CVYR-01-PM-01",
-        "XQMX-2-3-1850T-PM-01",
-        "XQMX-2-3-1850T-PRES-01-PM-01",
-        "XQMX-2-3-1850T-PRO-01-PM-01",
-        "XQMX-2-3-1850T-ROB-01-PM-01",
-        "XQMX-2-3-1850T-ROB-01-PM-02",
-        "XQMX-2-3-1850T-ROB-02-PM-01",
-        "XQMX-2-3-1850T-ROB-02-PM-02",
-        "XQMX-2-3-1850T-ROB-03-PM-01",
-        "XQMX-2-3-1850T-TCU-01-PM-01",
-        "XQMX-2-3-1850T-TCU-01-PM-02",
-        "XQMX-2-3-1850T-TCU-02-PM-01",
-        "XQMX-2-3-1850T-TCU-02-PM-02"
-    ]
-
-    
-}
-
-responsable_codigo = {
-
-     "XQMX-2-1-1850T": [
-        "Rafa",
-         "Rafa",
-         "Rafa",
-         "Rafa",
-         "Rafa",
-         "Rafa"
-    ],
-    "XQMX-2-2-1850T": [
-        "Dany",
-        "Dany",
-        "Dany",
-        "Dany",
-        "Dany",
-        "Dany",
-        "Dany",
-        "Dany",
-        "Dany",
-        "Dany"
-    ],
-    "XQMX-2-3-1850T": [
-        "XQMX-2-3-1850T-CVYR-01-PM-01",
-        "XQMX-2-3-1850T-PM-01",
-        "XQMX-2-3-1850T-PRES-01-PM-01",
-        "XQMX-2-3-1850T-PRO-01-PM-01",
-        "XQMX-2-3-1850T-ROB-01-PM-01",
-        "XQMX-2-3-1850T-ROB-01-PM-02",
-        "XQMX-2-3-1850T-ROB-02-PM-01",
-        "XQMX-2-3-1850T-ROB-02-PM-02",
-        "XQMX-2-3-1850T-ROB-03-PM-01",
-        "XQMX-2-3-1850T-TCU-01-PM-01",
-        "XQMX-2-3-1850T-TCU-01-PM-02",
-        "XQMX-2-3-1850T-TCU-02-PM-01",
-        "XQMX-2-3-1850T-TCU-02-PM-02"
-    ]
-
-    
-}
 
 
 
@@ -259,39 +143,47 @@ else:
 
 
 
-#--- SELECCIÓN DE MÁQUINA ---
-maquina_seleccionada = st.selectbox("Selecciona una máquina", list(maquinas.keys()))
-codigos = maquinas[maquina_seleccionada]
-nombre_01codigo = nombre_codigo[maquina_seleccionada]
-responsable_01codigo = responsable_codigo[maquina_seleccionada]
 
-#--- FUNCIÓN PARA COLOREAR ESTADO ---
-def color_estado(val):
-    if val == "Pendiente":
-        return 'background-color: #FF9999'  # rojo claro
-    elif val == "Completado":
-        return 'background-color: #99FF99'  # verde claro
-    return ''
 
-#--- CRUCE DE DATOS CON EL EXCEL ---
-df = pd.DataFrame({
-    "Código": codigos,
-    "Nombre": nombre_01codigo,
-    "Responsable": responsable_01codigo,
-    "Estado": [
-        "Completado" if (
-            (maquina_seleccionada in df_excel["MAQUINA"].values) and
-            (c in df_excel.loc[df_excel["MAQUINA"] == maquina_seleccionada, "CODIGO"].values)
-        ) else "Pendiente"
-        for c in codigos
-    ],
-    "Fecha": [
-        df_excel.loc[(df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c), "FECHA"].values[0]
+
+
+# --- Selección de máquina desde Excel maestro ------------------------------------------------------------
+
+maquinas = df_maestro["MAQUINA"].unique()
+maquina_seleccionada = st.selectbox("Selecciona una máquina", maquinas)
+
+# Filtrar solo los códigos de esa máquina
+df_codigos = df_maestro[df_maestro["MAQUINA"] == maquina_seleccionada]
+
+# --- CRUCE DE DATOS CON EL EXCEL DE PREVENTIVOS ---
+df = df_codigos.copy()
+df["Estado"] = df["CODIGO"].apply(
+    lambda c: "Completado" if (
+        (maquina_seleccionada in df_excel["MAQUINA"].values) and
+        (c in df_excel.loc[df_excel["MAQUINA"] == maquina_seleccionada, "CODIGO"].values)
+    ) else "Pendiente"
+)
+df["Fecha"] = df["CODIGO"].apply(
+    lambda c: (
+        df_excel.loc[
+            (df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c),
+            "FECHA"
+        ].values[0]
         if ((df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c)).any()
         else ""
-        for c in codigos
-    ]
-})
+    )
+)
+
+# --- Mostrar en tabla con colores ---
+def color_estado(val):
+    if val == "Pendiente":
+        return 'background-color: #FF9999'
+    elif val == "Completado":
+        return 'background-color: #99FF99'
+    return ''
+
+st.dataframe(df.style.applymap(color_estado, subset=["Estado"]), use_container_width=True)
+
 
 # --- CONTADORES ---
 total = len(df)
@@ -313,6 +205,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
