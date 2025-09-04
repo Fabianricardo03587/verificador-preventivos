@@ -96,11 +96,6 @@ nombre_codigo = {
 responsable_codigo = {
 
      "XQMX-2-1-1850T": [
-        "Rafa",
-        "Rafa",
-        "Rafa",
-        "Rafa",
-        "Rafa",
         "Rafa"
     ],
     "XQMX-2-2-1850T": [
@@ -313,6 +308,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
