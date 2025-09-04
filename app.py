@@ -110,7 +110,43 @@ except Exception as e:
     df_excel = st.session_state.df_excel
 
 # --- Valor de referencia (meta definida por el usuario) ---
-meta_preventivos = 53
+CLAVE_ADMIN = "1q2w3e"
+
+    
+# --- Valor de referencia (meta de preventivos) ---
+if "meta_preventivos" not in st.session_state:
+    st.session_state.meta_preventivos = 53  # valor inicial
+
+st.metric("Meta de Preventivos", st.session_state.meta_preventivos)
+
+
+
+
+
+
+
+# --- Opción para cambiar la meta SOLO con clave admin ---
+
+with st.expander("⚙️ Configuración de Meta (solo administradores)"):
+    clave_admin_ingresada = st.text_input("Clave de administrador:", type="password", key="clave_admin")
+    nueva_meta = st.number_input("Nueva meta de preventivos:", min_value=0, value=st.session_state.meta_preventivos, step=1)
+
+    if st.button("Actualizar Meta"):
+        if clave_admin_ingresada == st.secrets["CLAVE_ADMIN"]:
+            st.session_state.meta_preventivos = nueva_meta
+            st.success(f"✅ Meta actualizada a {nueva_meta}")
+        else:
+            st.error("❌ Clave de administrador incorrecta")
+
+
+
+
+
+
+
+
+
+#meta_preventivos = 53
 
 # Normalizamos y construimos el set de pares (MAQUINA, CODIGO) encontrados en el Excel
 if not df_excel.empty and {"MAQUINA","CODIGO"}.issubset(df_excel.columns):
@@ -134,10 +170,10 @@ pendientes_global = total_planificados - completados_global
 avance_global = round((completados_global / total_planificados) * 100, 1) if total_planificados else 0.0
 
 cG1, cG2, cG3, cG4 = st.columns(4)
-cG1.metric("✅ Completados (global)", completados_global)
-cG2.metric("🗂️ Planificados (global)", total_planificados)
-cG3.metric("📊 Avance (global)", f"{avance_global}%")
-cG4.metric("⌛ Pendientes (global)", pendientes_global)
+cG1.metric("✅ Completados", completados_global)
+cG2.metric("🗂️ Planificados", total_planificados)
+cG3.metric("📊 Avance (Al plan)", f"{avance_global}%")
+cG4.metric("⌛ Pendientes (Al plan)", pendientes_global)
 
 # Comparación contra tu meta
 if completados_global >= meta_preventivos:
@@ -199,6 +235,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
