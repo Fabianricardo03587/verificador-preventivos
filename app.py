@@ -198,9 +198,6 @@ def color_estado(val):
         return 'background-color: #99FF99'
     return ''
 
-st.dataframe(df.style.applymap(color_estado, subset=["Estado"]), use_container_width=True)
-
-
 # --- CONTADORES ---
 total = len(df)
 completados = (df["Estado"] == "Completado").sum()
@@ -221,6 +218,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
