@@ -72,6 +72,27 @@ if "autenticado" not in st.session_state:
     st.session_state.autenticado = False
 
 if not st.session_state.autenticado:
+    st.markdown("""
+        <style>
+        /* --- Estilos SOLO para la pantalla de login --- */
+        .stTextInput > div > div > input {
+            width: 300px;
+            font-size: 20px;
+            text-align: center;
+        }
+        .stButton > button {
+            width: 200px;
+            height: 50px;
+            font-size: 18px;
+            border-radius: 12px;
+            background-color: #1976d2;
+            color: white;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+    # Tu código de login aquí...
+
+    
     st.subheader("🔐 Acceso restringido")
     st.markdown("🔓 **Sesión iniciada correctamente**")
     clave_ingresada = st.text_input("Ingresa la clave para continuar:", type="password")
@@ -254,6 +275,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
