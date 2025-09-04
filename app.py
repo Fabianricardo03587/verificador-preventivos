@@ -138,7 +138,7 @@ completados_global = sum(
 )
 
 pendientes_global = total_planificados - completados_global
-avance_global = round((completados_global / total_planificados) * 100, 1) if total_planificados else 0.0
+avance_global = round((completados_global / st.session_state.meta_preventivos) * 100, 1) if total_planificados else 0.0
 
 
 
@@ -223,6 +223,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
