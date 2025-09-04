@@ -27,8 +27,8 @@ st.markdown(
     .block-container {
         padding-top: 2rem;
         padding-bottom: 1rem;
-        padding-left: 28rem;
-        padding-right: 28rem;
+        padding-left: 30rem;
+        padding-right: 30rem;
     }
     </style>
     """,
@@ -254,6 +254,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
