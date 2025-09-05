@@ -68,13 +68,14 @@ if not st.session_state.autenticado:
     }
 
         /* Evitar que las columnas dentro del contenedor hereden fondo, sombra y altura */
-    [data-testid="stVerticalBlock"] .stColumn {
-        background-color: transparent !important;
-        padding: 0px 0px;
-        box-shadow: none !important;
-        height: auto !important;
-        padding: 0 !important;  /* opcional, para quitar padding extra */
-    }
+    /* Selecciona las columnas dentro del bloque vertical principal */
+[data-testid="stVerticalBlock"] [data-testid="stVerticalBlock"] {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    height: auto !important;
+    padding: 0 !important;
+}
+
 
     /* Inputs centrados */
     .stTextInput > div > div > input {
@@ -349,6 +350,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
