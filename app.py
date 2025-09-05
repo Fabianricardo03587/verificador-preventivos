@@ -49,6 +49,7 @@ if not st.session_state.autenticado:
         .stButton > button {
             display: block;
             margin: 0 auto;        /* centra horizontalmente */
+            
             width: 150px;
             height: 40px;
             font-size: 18px;
@@ -87,7 +88,9 @@ if not st.session_state.autenticado:
         )
 
     clave_ingresada = st.text_input("",type="password")
-    
+    col1, col2, col3 = st.columnas([1,2,1])
+
+    with col2:
     if st.button("Entrar"):
         if clave_ingresada == CLAVE_SECRETA:
             st.session_state.autenticado = True
@@ -95,6 +98,7 @@ if not st.session_state.autenticado:
             st.rerun()
         else:
             st.error("❌ Clave incorrecta")
+            
     st.stop()
 
 else: 
@@ -302,6 +306,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
