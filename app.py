@@ -87,6 +87,18 @@ if not st.session_state.autenticado:
         margin: 10px 0;
     }
 
+    /* Centrar el botón dentro de la columna */
+[data-testid="stVerticalBlock"] button {
+    display: block;
+    margin: 0 auto;   /* centra horizontalmente */
+    width: 50%;       /* ajusta el ancho del botón */
+    padding: 10px 0;  /* altura y espacio interno */
+    font-size: 16px;
+    background-color: #2542FF;
+    color: white;
+    border-radius: 8px;
+    border: none;
+}
     /* Botón centrado */
     .stButton {
         display: flex;
@@ -124,8 +136,8 @@ if not st.session_state.autenticado:
     clave_ingresada = st.text_input("Ingresa tu clave:", type="password")
 
     # Botón
-    col1, col2, col3 = st.columns([1,2,1])
-    with col2:
+    #col1, col2, col3 = st.columns([1,2,1])
+    #with col2:
         if st.button("Entrar"):
             if clave_ingresada == CLAVE_SECRETA:
                 st.session_state.autenticado = True
@@ -351,6 +363,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
