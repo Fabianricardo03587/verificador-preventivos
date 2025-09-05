@@ -115,7 +115,7 @@ if not st.session_state.autenticado:
             unsafe_allow_html=True
         )
 
-    clave_ingresada = st.text_input("Ingresa la clave para continuar:", type="password")
+    #clave_ingresada = st.text_input("Ingresa la clave para continuar:", type="password")
     
     if st.button("Entrar"):
         if clave_ingresada == CLAVE_SECRETA:
@@ -331,6 +331,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
