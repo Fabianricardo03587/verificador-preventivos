@@ -59,8 +59,8 @@ if not st.session_state.autenticado:
         /* Contenedor visual central (todo el bloque vertical) */
     [data-testid="stVerticalBlock"] {
 
-    
         background-color: white !important;
+        color: black !important;             /* Texto negro fijo */
         padding: 40px 30px;
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -73,6 +73,12 @@ if not st.session_state.autenticado:
         align-items: center;     /* centra horizontalmente todos los hijos */
         justify-content: center; /* opcional: centra vertical dentro del contenedor */
     }
+
+    /* Todos los textos dentro del contenedor */
+    [data-testid="stVerticalBlock"] * {
+        color: black !important;
+    }
+
 
         /* Evitar que las columnas dentro del contenedor hereden fondo, sombra y altura */
     /* Selecciona las columnas dentro del bloque vertical principal */
@@ -364,6 +370,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
