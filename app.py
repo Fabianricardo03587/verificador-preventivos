@@ -38,12 +38,19 @@ if not st.session_state.autenticado:
             padding-top: 20rem;
         }
         
-        .stTextInput > div > div > input {
-            width: 50%;
-            font-size: 16px;
-            padding:8px;
-            text-align: center;
+        /* Contenedor del input */
+        .stTextInput > div {
+            width: 50%;   /* Ajusta el tamaño del recuadro completo */
+            margin: 0 auto; /* Lo centra */
         }
+
+        /* Cajita de texto */
+        .stTextInput > div > div > input {
+            width: 100%;  /* Ahora ocupa todo el contenedor que limitamos arriba */
+            font-size: 16px;
+            padding: 8px;
+            text-align: center;
+}
 
 
         .stButton > button {
@@ -57,6 +64,9 @@ if not st.session_state.autenticado:
             background-color: #1976d2;
             color: white;
         }
+
+
+        
         /* Cuando paso el mouse (hover) */
         .stButton > button:hover {
             background-color: #1565c0; /* azul más oscuro */
@@ -315,6 +325,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
