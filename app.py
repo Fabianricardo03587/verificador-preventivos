@@ -119,7 +119,7 @@ if not st.session_state.autenticado:
         max-width: 300px;     /* Limita el ancho máximo para que no se vea gigante */
         padding: 10px 40px;      /* Más espacio vertical, sin mucho horizontal */
         background-color: #2542FF;
-        color: white;
+        color: white !important;
         border-radius: 8px;
         border: none;
         font-size: 16px;
@@ -370,6 +370,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
