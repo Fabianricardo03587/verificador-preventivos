@@ -77,6 +77,10 @@ if not st.session_state.autenticado:
     }
 
     /* Botón centrado */
+    .stButton {
+        display: flex;
+        justify-content: center;  /* centra horizontalmente */
+    }
     .stButton > button {
         width: 100%;           /* Usa el 80% del contenedor padre */
         max-width: 300px;     /* Limita el ancho máximo para que no se vea gigante */
@@ -87,8 +91,6 @@ if not st.session_state.autenticado:
         border: none;
         font-size: 16px;
         display: block;       /* importante: que sea un bloque */
-        margin-left: auto;    /* centra horizontalmente */
-        margin-right: auto;   /* centra horizontalmente */
         margin-top: 15px;
     }
     .stButton > button:hover {
@@ -336,6 +338,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
