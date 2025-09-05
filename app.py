@@ -48,65 +48,37 @@ if not st.session_state.autenticado:
             visibility: hidden;
         }
 
-        /* Fondo con degradado aplicado al contenedor principal */
-        .stApp {
-            background: linear-gradient(to bottom, #0082F4, #2542FF);
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-
-          /* Contenedor completo del login */
         .login-container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            width: 400px;
-            margin: 50px auto;
-            text-align: center;
-        }
-
-        /* Título dentro del recuadro */
-        .login-container h2 {
-            margin-bottom: 25px;
-        }
-
-        /* Input centrado */
-        .stTextInput > div > div > input {
-            width: 70%;
-            font-size: 16px;
-            padding: 8px;
-            text-align: center;
-        }
-
-        /* Botón */
-        .stButton button {
-            width: 50%;
-            padding: 8px;
-            font-size: 16px;
-            margin-top: 15px;
-        }
-    </style>
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        width: 400px;
+        margin: 50px auto;
+        text-align: center;
+    }
+    
+    /* Input y botón con fondo blanco */
+    .stTextInput > div > div > input,
+    .stButton > button {
+        background: white;
+        border-radius: 8px;
+    }
+</style>
 """, unsafe_allow_html=True)
 
-    # --- Recuadro login completo ---
+    # --- Solo recuadro para el título ---
     st.markdown('<div class="login-container">', unsafe_allow_html=True)
-
     st.markdown('<h2>🔐 Acceso al sistema</h2>', unsafe_allow_html=True)
-
-    with st.form(key="login_form"):
-        clave_ingresada = st.text_input("Ingresa la clave para continuar:", type="password")
-        submitted = st.form_submit_button("Entrar")
-        
-        if submitted:
-            if clave_ingresada == "1234":
-                st.success("✅ Acceso concedido")
-            else:
-                st.error("❌ Clave incorrecta")
-
     st.markdown('</div>', unsafe_allow_html=True)
+
+    # Inputs y botón (aparecen debajo, pero con fondo blanco)
+    clave_ingresada = st.text_input("Ingresa la clave para continuar:", type="password")
+    if st.button("Entrar"):
+        if clave_ingresada == "1234":
+            st.success("✅ Acceso concedido")
+        else:
+            st.error("❌ Clave incorrecta")
             
     st.stop()
 
@@ -323,6 +295,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
