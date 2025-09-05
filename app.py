@@ -66,6 +66,12 @@ if not st.session_state.autenticado:
         margin: 50px auto;
         text-align: center;
     }
+    /* Evitamos que las columnas dentro tengan sombra ni fondo */
+    .login-box .stColumn {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    height: auto !important;
+}
 
     /* Inputs centrados */
     .stTextInput > div > div > input {
@@ -340,6 +346,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
