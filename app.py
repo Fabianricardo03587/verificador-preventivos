@@ -110,9 +110,7 @@ if not st.session_state.autenticado:
     st.markdown("### Acceso restringido")
 
     # Input de clave
-    col1, col2, col3 = st.columns([1,2,1])
-    with col2:
-        clave_ingresada = st.text_input("Ingresa tu clave:", type="password")
+    clave_ingresada = st.text_input("Ingresa tu clave:", type="password")
 
     # Botón
     col1, col2, col3 = st.columns([1,2,1])
@@ -342,6 +340,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
