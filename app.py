@@ -128,28 +128,19 @@ if not st.session_state.autenticado:
     # Tu código de login aquí...
 
 
-    st.markdown(
-            "<p style='text-align: center; font-size:40px;'> <b>Acceso restringido</b></p>", 
-            unsafe_allow_html=True
-        )
+    # Aquí armamos el layout con HTML pero separado del contenido
+st.markdown('<div class="contenedor-centro"><div class="fondo-blanco">', unsafe_allow_html=True)
 
-    st.markdown(
-            "<p style='text-align: center; font-size:18px;'> <b>Ingresa la clave para continuar</b></p>", 
-            unsafe_allow_html=True
-        )
+st.title("Acceso al sistema")
+clave_ingresada = st.text_input("Ingresa tu clave:", type="password")
 
-    clave_ingresada = st.text_input("",type="password")
-    
-    col1, col2, col3 = st.columns([1,2,1])
+if st.button("Entrar"):
+    if clave_ingresada == "1234":
+        st.success("✅ Acceso concedido")
+    else:
+        st.error("❌ Clave incorrecta")
 
-    with col2:
-        if st.button("Entrar"):
-            if clave_ingresada == CLAVE_SECRETA:
-                st.session_state.autenticado = True
-                st.success("✅ Acceso concedido")
-                st.rerun()
-            else:
-                st.error("❌ Clave incorrecta") 
+st.markdown('</div></div>', unsafe_allow_html=True)
             
     st.stop()
 
@@ -366,6 +357,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
