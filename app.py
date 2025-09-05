@@ -38,10 +38,10 @@ if not st.session_state.autenticado:
             visibility: hidden;
         }
 
-        /* Ocultar el encabezado completo de Streamlit */
+        /* Ocultar el encabezado completo de Streamlit 
         header {
             visibility: hidden;
-        }
+        }*/
 
         /* Opcional: ocultar el pie de página "Made with Streamlit" */
             footer {
@@ -356,6 +356,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
