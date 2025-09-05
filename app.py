@@ -84,14 +84,16 @@ if not st.session_state.autenticado:
         </style>
     """, unsafe_allow_html=True)
     # Tu código de login aquí...
+
+
     
     st.markdown(
             "<h2 style='text-align: center;'>🔐 Acceso restringido</h2>", 
             unsafe_allow_html=True
         )
 
-        st.markdown(
-            "<p style='text-align: center; font-size:18px;'>🔓 <b>ingresa la clave para continuar:</b></p>", 
+    st.markdown(
+            "<p style='text-align: center; font-size:18px;'>🔓 <b>Sesión iniciada correctamente</b></p>", 
             unsafe_allow_html=True
         )
 
@@ -311,6 +313,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
