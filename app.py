@@ -48,6 +48,14 @@ if not st.session_state.autenticado:
             visibility: hidden;
         }
 
+        /* Fondo con degradado aplicado al contenedor principal */
+        .stApp {
+            background: linear-gradient(to bottom, #0082F4, #2542FF);
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
         .login-container {
         background: white;
         padding: 30px;
@@ -295,6 +303,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
