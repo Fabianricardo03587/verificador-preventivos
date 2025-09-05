@@ -8,7 +8,7 @@ from io import BytesIO
 SUPABASE_URL = st.secrets["SUPABASE_URL"]
 SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 BUCKET_NAME = "archivos-excel"
-
+CLAVE_SECRETA = st.secrets["CLAVE_SECRETA"]
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
@@ -55,13 +55,14 @@ if not st.session_state.autenticado:
             background-repeat: no-repeat;
             background-size: cover;
         }
+
         /* Contenedor visual central (todo el bloque vertical) */
     [data-testid="stVerticalBlock"] {
         background-color: white !important;
         padding: 40px 30px;
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        max-width: 400px;
+        max-width: 500px;
         margin: 50px auto;
         text-align: center;
     }
@@ -97,12 +98,10 @@ if not st.session_state.autenticado:
     </style>
     """, unsafe_allow_html=True)
 
-    CLAVE_SECRETA = "1234"
-
     # Contenedor principal
     st.markdown('<div class="container-box">', unsafe_allow_html=True)
 
-    st.markdown("### 🔐 Acceso restringido")
+    st.markdown("### Acceso restringido")
 
     # Input de clave
     clave_ingresada = st.text_input("Ingresa tu clave:", type="password")
@@ -333,6 +332,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
