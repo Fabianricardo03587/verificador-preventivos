@@ -57,28 +57,22 @@ if not st.session_state.autenticado:
         }
 
 
-        /* Recuadro principal */
-        .login-box {
+         /* Recuadro genérico */
+        .fondo-blanco {
             background: white;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            width: 400px;
-            margin: 20px auto;
+            margin: auto;
             text-align: center;
         }
 
-        /* Recuadro para el título */
-        .title-box {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-            width: 400px;
-            margin: 20px auto;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
+        /* Centrar vertical y horizontal */
+        .contenedor-centro {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* toda la altura de la pantalla */
         }
         
         .block-container {
@@ -372,6 +366,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
