@@ -72,55 +72,25 @@ if not st.session_state.autenticado:
         .login-container h2 {
             margin-bottom: 25px;
         }
-        
-        .block-container {
-            max-width: 25%;
-            padding-top: 15rem;
-        }
-        
-        /* Contenedor del input */
-        .stTextInput > div {
-            width: 80%;   /* Ajusta el tamaño del recuadro completo */
-            margin: 0 auto; /* Lo centra */
-        }
 
         /* Input centrado */
         .stTextInput > div > div > input {
             width: 70%;
             font-size: 16px;
-            padding:8px;
+            padding: 8px;
             text-align: center;
         }
 
-        .stButton > button {
-            display: block;
-            margin: 0 auto;        /* centra horizontalmente */
-            
-            width: 150px;
-            height: 40px;
-            font-size: 18px;
-            border-radius: 10px;
-            background-color: #1976d2;
-            color: white;
+        /* Botón */
+        .stButton button {
+            width: 50%;
+            padding: 8px;
+            font-size: 16px;
+            margin-top: 15px;
         }
-        
-        /* Cuando paso el mouse (hover) */
-        .stButton > button:hover {
-            background-color: #1565c0; /* azul más oscuro */
-            transform: scale(1.03); /* efecto zoom suave */
-        }
-        /* Cuando hago click (active) */
-        .stButton > button:active {
-            background-color: #0d47a1; /* azul más fuerte */
-            transform: scale(0.97); /* se achica un poco */
-        }
-}
+    </style>
+""", unsafe_allow_html=True)
 
-
-        
-        </style>
-    """, unsafe_allow_html=True)
-    
     # --- Recuadro login completo ---
     st.markdown('<div class="login-container">', unsafe_allow_html=True)
 
@@ -129,7 +99,7 @@ if not st.session_state.autenticado:
     with st.form(key="login_form"):
         clave_ingresada = st.text_input("Ingresa la clave para continuar:", type="password")
         submitted = st.form_submit_button("Entrar")
-    
+        
         if submitted:
             if clave_ingresada == "1234":
                 st.success("✅ Acceso concedido")
@@ -353,6 +323,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
