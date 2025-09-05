@@ -74,10 +74,21 @@ if not st.session_state.autenticado:
         justify-content: center; /* opcional: centra vertical dentro del contenedor */
     }
 
-    /* Todos los textos dentro del contenedor */
-    [data-testid="stVerticalBlock"] * {
+
+    /* Todos los textos dentro del contenedor, excepto botones */
+    [data-testid="stVerticalBlock"] *:not(button) {
         color: black !important;
     }
+
+    /* Input de contraseña */
+    input[type="password"] {
+        background-color: #f0f0f0 !important; /* Fondo gris claro */
+        color: black !important;              /* Texto negro */
+        border-radius: 5px !important;
+        padding: 8px !important;
+        border: 1px solid #ccc !important;
+    }
+
 
 
         /* Evitar que las columnas dentro del contenedor hereden fondo, sombra y altura */
@@ -370,6 +381,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
