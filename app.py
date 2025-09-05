@@ -32,34 +32,28 @@ if "autenticado" not in st.session_state:
 if not st.session_state.autenticado:
     st.markdown("""
         <style>
-        /* --- Estilos SOLO para la pantalla de login --- */
+        /* --- Estilos SOLO para la pantalla de login en PC --- */
+@media (min-widith: 768px){
 
         .block-container {
             max-width: 20%;
             padding-top: 20rem;
         }
-        
         .stTextInput > div > div > input {
             width: 80%;
             font-size: 20px;
             text-align: center;
         }
-
         clave_ingresada = st.text_input(
             "Ingresa la clave para continuar:", 
             type="password",
             label_visibility="collapsed"  # oculta el label original
         )
-
         # Agregamos un label centrado manual
         st.markdown(
             "<p style='text-align: center; font-size:16px;'>Ingresa la clave para continuar:</p>", 
             unsafe_allow_html=True
         )
-
-        
-       
-        
         .stButton > button {
             width: 150px;
             height: 40px;
@@ -68,19 +62,60 @@ if not st.session_state.autenticado:
             background-color: #1976d2;
             color: white;
         }
-        
         /* Cuando paso el mouse (hover) */
         .stButton > button:hover {
             background-color: #1565c0; /* azul más oscuro */
             transform: scale(1.03); /* efecto zoom suave */
         }
-
         /* Cuando hago click (active) */
         .stButton > button:active {
             background-color: #0d47a1; /* azul más fuerte */
             transform: scale(0.97); /* se achica un poco */
         }
+}
+        /* --- Estilos SOLO para la pantalla de login en CELULAR --- */
+@media (max-widith: 768px){
 
+        .block-container {
+            max-width: 90%;
+            padding-top: 1rem auto;
+        }
+        .stTextInput > div > div > input {
+            width: 100%;
+            font-size: 14px;
+            text-align: center;
+        }
+        clave_ingresada = st.text_input(
+            "Ingresa la clave para continuar:", 
+            type="password",
+            label_visibility="collapsed"  # oculta el label original
+        )
+        # Agregamos un label centrado manual
+        st.markdown(
+            "<p style='text-align: center; font-size:16px;'>Ingresa la clave para continuar:</p>", 
+            unsafe_allow_html=True
+        )
+        .stButton > button {
+            width: 100%;
+            height: 40px;
+            font-size: 16px;
+            border-radius: 10px;
+            background-color: #1976d2;
+            color: white;
+        }
+        /* Cuando paso el mouse (hover) */
+        .stButton > button:hover {
+            background-color: #1565c0; /* azul más oscuro */
+            transform: scale(1.03); /* efecto zoom suave */
+        }
+        /* Cuando hago click (active) */
+        .stButton > button:active {
+            background-color: #0d47a1; /* azul más fuerte */
+            transform: scale(0.97); /* se achica un poco */
+        }
+}
+
+        
         </style>
     """, unsafe_allow_html=True)
     # Tu código de login aquí...
@@ -313,4 +348,5 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
