@@ -58,6 +58,8 @@ if not st.session_state.autenticado:
 
         /* Contenedor visual central (todo el bloque vertical) */
     [data-testid="stVerticalBlock"] {
+
+    
         background-color: white !important;
         padding: 40px 30px;
         border-radius: 15px;
@@ -65,6 +67,11 @@ if not st.session_state.autenticado:
         max-width: 500px;
         margin: 50px auto;
         text-align: center;
+
+        display: flex;           /* activa flexbox */
+        flex-direction: column;  /* apila elementos verticalmente */
+        align-items: center;     /* centra horizontalmente todos los hijos */
+        justify-content: center; /* opcional: centra vertical dentro del contenedor */
     }
 
         /* Evitar que las columnas dentro del contenedor hereden fondo, sombra y altura */
@@ -357,6 +364,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
