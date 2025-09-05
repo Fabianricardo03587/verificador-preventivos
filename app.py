@@ -88,7 +88,8 @@ if not st.session_state.autenticado:
         )
 
     clave_ingresada = st.text_input("",type="password")
-    col1, col2, col3 = st.columnas([1,2,1])
+    
+    col1, col2, col3 = st.columns([1,2,1])
 
     with col2:
         if st.button("Entrar"):
@@ -306,6 +307,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
