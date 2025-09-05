@@ -36,9 +36,10 @@ if not st.session_state.autenticado:
 @media (min-widith: 768px){
 
         .block-container {
-            max-width: 20%;
+            max-width: 200px;
             padding-top: 20rem;
         }
+        
         .stTextInput > div > div > input {
             width: 80%;
             font-size: 20px;
@@ -46,6 +47,7 @@ if not st.session_state.autenticado:
         }
         clave_ingresada = st.text_input(
             "Ingresa la clave para continuar:", 
+            text-align: center
             type="password",
             label_visibility="collapsed"  # oculta el label original
         )
@@ -87,6 +89,7 @@ if not st.session_state.autenticado:
         }
         clave_ingresada = st.text_input(
             "Ingresa la clave para continuar:", 
+            text-align: center;
             type="password",
             label_visibility="collapsed"  # oculta el label original
         )
@@ -348,5 +351,6 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
