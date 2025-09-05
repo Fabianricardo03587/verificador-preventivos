@@ -136,10 +136,10 @@ if not st.session_state.autenticado:
     st.markdown('<div class="title-box">🔐 Acceso al sistema</div>', unsafe_allow_html=True)
 
     
-    st.markdown('<div class="login-box">Ingresa la contraseña</div>', unsafe_allow_html=True)
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
 
     CLAVE_SECRETA = "1234"
-    clave_ingresada = st.text_input("", type="password")
+    clave_ingresada = st.text_input("ingresa la clave", type="password")
 
     col1, col2, col3 = st.columns([1,2,1])
     with col2:
@@ -368,6 +368,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
