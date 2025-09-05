@@ -33,7 +33,20 @@ if not st.session_state.autenticado:
     st.markdown("""
         <style>
         /* --- Estilos SOLO para la pantalla de login en PC --- */
+        
+        #MainMenu {
+            visibility: hidden;
+        }
 
+        /* Ocultar el encabezado completo de Streamlit */
+        header {
+            visibility: hidden;
+        }
+
+        /* Opcional: ocultar el pie de página "Made with Streamlit" */
+            footer {
+            visibility: hidden;
+        }
 
         /* Fondo con degradado aplicado al contenedor principal */
         .stApp {
@@ -337,6 +350,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
