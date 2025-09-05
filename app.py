@@ -56,29 +56,30 @@ if not st.session_state.autenticado:
             background-size: cover;
         }
 
-
-    
-    /* Input y botón con fondo blanco */
-    .stTextInput > div > div > input,
-    .stButton > button {
+        .container-box {
         background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        max-width: 400px;
+        margin: 50px auto;
+        text-align: center;
+    }
+    .stTextInput>div>div>input,
+    .stButton>button {
         border-radius: 8px;
     }
+    
 </style>
 """, unsafe_allow_html=True)
 
-    # --- Solo recuadro para el título ---
-    st.markdown('<div class="login-container">', unsafe_allow_html=True)
-    st.markdown('<h2>🔐 Acceso al sistema</h2>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # Inputs y botón (aparecen debajo, pero con fondo blanco)
-    clave_ingresada = st.text_input("Ingresa la clave para continuar:", type="password")
-    if st.button("Entrar"):
-        if clave_ingresada == "1234":
-            st.success("✅ Acceso concedido")
-        else:
-            st.error("❌ Clave incorrecta")
+    # --- Container para todo ---
+with st.container():
+    st.markdown('<div class="container-box">', unsafe_allow_html=True)
+    st.markdown("## 🔐 Acceso al sistema", unsafe_allow_html=True)
+    clave_ingresada = st.text_input("Clave:", type="password")
+    st.button("Entrar")
+    st.markdown("</div>", unsafe_allow_html=True)
             
     st.stop()
 
@@ -295,6 +296,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
