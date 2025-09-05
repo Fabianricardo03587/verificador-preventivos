@@ -56,6 +56,8 @@ if not st.session_state.autenticado:
             background-size: cover;
         }
 
+
+
         /* Contenedor visual central (todo el bloque vertical) */
     [data-testid="stVerticalBlock"] {
 
@@ -77,30 +79,17 @@ if not st.session_state.autenticado:
 
     /* Todos los textos dentro del contenedor, excepto botones */
     [data-testid="stVerticalBlock"] *:not(button) {
-        color: black !important;
-    }
+    color: black !important;
+}
 
     /* Input de contraseña */
-    input[type="password"] {
+    [data-testid="stTextInput"] input {
         background-color: #f0f0f0 !important; /* Fondo gris claro */
         color: black !important;              /* Texto negro */
         border-radius: 5px !important;
         padding: 8px !important;
-        border: 0px solid #ccc !important;
-    }
-
-
-
-        /* Evitar que las columnas dentro del contenedor hereden fondo, sombra y altura */
-    /* Selecciona las columnas dentro del bloque vertical principal */
-[data-testid="stVerticalBlock"] [data-testid="stVerticalBlock"] {
-    background-color: transparent !important;
-    box-shadow: none !important;
-    height: auto !important;
-    padding: 0 !important;
-
+        border: 1px solid #ccc !important;    /* Borde gris */
 }
-
 
     /* Inputs centrados */
     .stTextInput > div > div > input {
@@ -111,11 +100,7 @@ if not st.session_state.autenticado:
         margin: 10px 0;
     }
 
-    
-
-
     #buton
-
     .stButton {
         display: flex;
         margin: 0 auto;
@@ -123,6 +108,7 @@ if not st.session_state.autenticado:
     }
 
     .stButton > button {
+        color: white !important;
         display: block;       /* importante: que sea un bloque */
         margin: 0 auto;   /* centra horizontalmente */
         width: 50%;           /* Usa el 80% del contenedor padre */
@@ -130,7 +116,6 @@ if not st.session_state.autenticado:
         max-width: 300px;     /* Limita el ancho máximo para que no se vea gigante */
         padding: 10px 40px;      /* Más espacio vertical, sin mucho horizontal */
         background-color: #2542FF;
-        color: white !important;
         border-radius: 8px;
         border: none;
         font-size: 16px;
@@ -381,6 +366,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
