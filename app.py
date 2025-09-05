@@ -55,11 +55,10 @@ if not st.session_state.autenticado:
             background-repeat: no-repeat;
             background-size: cover;
         }
-
-        /* Contenedor principal de login */
-    .stApp > div[data-testid="stVerticalBlock"] {
-        background: white !important;
-        padding: 30px;
+        /* Contenedor visual central (todo el bloque vertical) */
+    [data-testid="stVerticalBlock"] {
+        background-color: white !important;
+        padding: 40px 30px;
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         max-width: 400px;
@@ -67,12 +66,7 @@ if not st.session_state.autenticado:
         text-align: center;
     }
 
-    /* Estilizar el título */
-    .stApp h1, .stApp h2, .stApp h3, .stApp h4 {
-        margin-bottom: 20px;
-    }
-
-    /* Inputs centrados y con tamaño definido */
+    /* Inputs centrados */
     .stTextInput > div > div > input {
         width: 80% !important;
         padding: 10px;
@@ -81,7 +75,7 @@ if not st.session_state.autenticado:
         margin: 10px 0;
     }
 
-    /* Botón centrado y con estilo */
+    /* Botón centrado */
     .stButton > button {
         width: 50%;
         padding: 10px;
@@ -90,24 +84,22 @@ if not st.session_state.autenticado:
         border-radius: 8px;
         border: none;
         font-size: 16px;
-        cursor: pointer;
-        margin-top: 10px;
+        margin-top: 15px;
     }
-
     .stButton > button:hover {
         background-color: #1976a0;
     }
-    
-</style>
-""", unsafe_allow_html=True)
 
-    # Título
+    /* Título centrado */
+    h1, h2, h3 {
+        margin-bottom: 25px;
+    } 
+    </style>
+    """, unsafe_allow_html=True)
+
+    # --- Login ---
     st.subheader("🔐 Acceso restringido")
-
-    # Input de contraseña
     clave_ingresada = st.text_input("Ingresa tu clave:", type="password")
-
-    # Botón de login
     if st.button("Iniciar sesión"):
         st.success("¡Sesión iniciada correctamente!")
             
@@ -326,6 +318,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
