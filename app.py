@@ -34,6 +34,21 @@ if not st.session_state.autenticado:
         <style>
         /* --- Estilos SOLO para la pantalla de login --- */
 
+       
+
+        clave_ingresada = st.text_input(
+            "Ingresa la clave para continuar:", 
+            type="password",
+            label_visibility="collapsed"  # oculta el label original
+        )
+
+        # Agregamos un label centrado manual
+        st.markdown(
+            "<p style='text-align: center; font-size:16px;'>Ingresa la clave para continuar:</p>", 
+            unsafe_allow_html=True
+        )
+
+        
         .block-container {
             max-width: 40%;
             padding-top: 2rem;
@@ -70,8 +85,16 @@ if not st.session_state.autenticado:
     """, unsafe_allow_html=True)
     # Tu código de login aquí...
     
-    st.subheader("🔐 Acceso restringido")
-    st.markdown("🔓 **Sesión iniciada correctamente**")
+    st.markdown(
+            "<h2 style='text-align: center;'>🔐 Acceso restringido</h2>", 
+            unsafe_allow_html=True
+        )
+
+        st.markdown(
+            "<p style='text-align: center; font-size:18px;'>🔓 <b>ingresa la clave para continuar:</b></p>", 
+            unsafe_allow_html=True
+        )
+
     clave_ingresada = st.text_input("Ingresa la clave para continuar:", type="password")
     
     if st.button("Entrar"):
@@ -288,6 +311,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
