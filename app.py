@@ -33,6 +33,12 @@ if not st.session_state.autenticado:
     st.markdown("""
         <style>
         /* --- Estilos SOLO para la pantalla de login en PC --- */
+
+
+        body {
+            background: linear-gradient(135deg, #0082F4, #2542FF);
+        }
+        
         .block-container {
             max-width: 25%;
             padding-top: 15rem;
@@ -327,6 +333,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
