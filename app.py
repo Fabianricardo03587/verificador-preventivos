@@ -86,7 +86,9 @@ if not st.session_state.autenticado:
         border-radius: 8px;
         border: none;
         font-size: 16px;
-        display: block;       /* Hace que el botón sea un bloque */
+        display: block;       /* importante: que sea un bloque */
+        margin-left: auto;    /* centra horizontalmente */
+        margin-right: auto;   /* centra horizontalmente */
         margin-top: 15px;
     }
     .stButton > button:hover {
@@ -334,6 +336,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
