@@ -87,21 +87,29 @@ if not st.session_state.autenticado:
         margin: 10px 0;
     }
 
-    /* Centrar el botón dentro de la columna */
-[data-testid="stVerticalBlock"] button {
-    display: block;
-    margin: 0 auto;   /* centra horizontalmente */
-    width: 50%;       /* ajusta el ancho del botón */
-    padding: 10px 40px;  /* altura y espacio interno */
-    font-size: 16px;
-    background-color: #2542FF;
-    color: white;
-    border-radius: 8px;
-    border: none;
-}
+    
 
 
     #buton
+    .stButton {
+        display: flex;
+        justify-content: center;  /* centra horizontalmente */
+    }
+    .stButton > button {
+        width: 100%;           /* Usa el 80% del contenedor padre */
+        max-width: 300px;     /* Limita el ancho máximo para que no se vea gigante */
+        padding: 10px 40px;      /* Más espacio vertical, sin mucho horizontal */
+        background-color: #2542FF;
+        color: white;
+        border-radius: 8px;
+        border: none;
+        font-size: 16px;
+        display: block;       /* importante: que sea un bloque */
+        margin-top: 15px;
+    }
+    .stButton > button:hover {
+        background-color: #1976a0;
+    }            
 
     /* Título centrado */
     h1, h2, h3 {
@@ -344,6 +352,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
