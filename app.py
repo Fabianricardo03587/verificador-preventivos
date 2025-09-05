@@ -88,7 +88,7 @@ if not st.session_state.autenticado:
 
     
     st.markdown(
-            "<h2 style='text-align: center;'>Acceso restringido</h2>", 
+            "<h2 style='text-align: center;  font-size:25px;'>Acceso restringido</h2>", 
             unsafe_allow_html=True
         )
 
@@ -325,6 +325,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
