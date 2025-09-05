@@ -62,7 +62,6 @@ if not st.session_state.autenticado:
     [data-testid="stVerticalBlock"] {
 
         background-color: white !important;
-        /* color: black !important;              Texto negro fijo */
         padding: 40px 30px;
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -79,7 +78,6 @@ if not st.session_state.autenticado:
 
     /* Todos los textos dentro del contenedor, excepto botones */
     [data-testid="stVerticalBlock"] *:not(button) {
-    color: black !important;
 }
 
 
@@ -358,6 +356,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
