@@ -40,7 +40,7 @@ if not st.session_state.autenticado:
         }
         
         .stTextInput > div > div > input {
-            width: 300px;
+            width: 80%;
             font-size: 20px;
             text-align: center;
         }
@@ -313,67 +313,4 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
