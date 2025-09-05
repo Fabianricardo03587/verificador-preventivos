@@ -93,7 +93,7 @@ if not st.session_state.autenticado:
         )
 
     st.markdown(
-            "<p style='text-align: center; font-size:18px;'>🔓 <b>Sesión iniciada correctamente</b></p>", 
+            "<p style='text-align: center; font-size:18px;'>🔓 <b>Ingresa la clave para continuar</b></p>", 
             unsafe_allow_html=True
         )
 
@@ -313,6 +313,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
