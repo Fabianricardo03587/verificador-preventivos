@@ -57,15 +57,17 @@ if not st.session_state.autenticado:
         }
 
 
-         /* Recuadro principal */
-        .login-box {
+          /* Recuadro para el título */
+        .title-box {
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
             width: 400px;
             margin: 20px auto;
             text-align: center;
+            font-size: 24px;
+            font-weight: bold;
         }
 
          /* Recuadro principal del login */
@@ -133,6 +135,7 @@ if not st.session_state.autenticado:
     # --- Aquí usas las clases en HTML ---
     st.markdown('<div class="title-box">🔐 Acceso al sistema</div>', unsafe_allow_html=True)
 
+    
     st.markdown('<div class="login-box">Ingresa la contraseña</div>', unsafe_allow_html=True)
 
     CLAVE_SECRETA = "1234"
@@ -365,6 +368,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
