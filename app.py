@@ -57,22 +57,28 @@ if not st.session_state.autenticado:
         }
 
 
-         /* Recuadro genérico */
-        .fondo-blanco {
+         /* Recuadro principal */
+        .login-box {
             background: white;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            margin: auto;
+            width: 400px;
+            margin: 20px auto;
             text-align: center;
         }
 
-        /* Centrar vertical y horizontal */
-        .contenedor-centro {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; /* toda la altura de la pantalla */
+        /* Recuadro para el título */
+        .title-box {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            width: 400px;
+            margin: 20px auto;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
         }
         
         .block-container {
@@ -125,22 +131,25 @@ if not st.session_state.autenticado:
         
         </style>
     """, unsafe_allow_html=True)
-    # Tu código de login aquí...
+    # --- Aquí usas las clases en HTML ---
+st.markdown('<div class="title-box">🔐 Acceso al sistema</div>', unsafe_allow_html=True)
 
+st.markdown('<div class="login-box">', unsafe_allow_html=True)
 
-    # Aquí armamos el layout con HTML pero separado del contenido
-    st.markdown('<div class="contenedor-centro"><div class="fondo-blanco">', unsafe_allow_html=True)
+CLAVE_SECRETA = "1234"
+clave_ingresada = st.text_input("", type="password")
 
-    st.title("Acceso al sistema")
-    clave_ingresada = st.text_input("Ingresa tu clave:", type="password")
-
+col1, col2, col3 = st.columns([1,2,1])
+with col2:
     if st.button("Entrar"):
-        if clave_ingresada == "1234":
+        if clave_ingresada == CLAVE_SECRETA:
             st.success("✅ Acceso concedido")
+            st.session_state.autenticado = True
+            st.rerun()
         else:
             st.error("❌ Clave incorrecta")
 
-    st.markdown('</div></div>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)  # cierre del login-box
             
     st.stop()
 
@@ -357,6 +366,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
