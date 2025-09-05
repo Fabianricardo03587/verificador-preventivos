@@ -50,7 +50,7 @@ if not st.session_state.autenticado:
 
         /* Fondo con degradado aplicado al contenedor principal */
         .stApp {
-            background: linear-gradient(135deg, #2193b0, #6dd5ed);
+            background: linear-gradient(135deg, #0082F4, #2542FF);
             background-attachment: fixed;
             background-repeat: no-repeat;
             background-size: cover;
@@ -350,6 +350,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
