@@ -92,7 +92,7 @@ if not st.session_state.autenticado:
     display: block;
     margin: 0 auto;   /* centra horizontalmente */
     width: 50%;       /* ajusta el ancho del botón */
-    padding: 10px 0;  /* altura y espacio interno */
+    padding: 10px 40px;  /* altura y espacio interno */
     font-size: 16px;
     background-color: #2542FF;
     color: white;
@@ -344,6 +344,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
