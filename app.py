@@ -35,7 +35,7 @@ if not st.session_state.autenticado:
         /* --- Estilos SOLO para la pantalla de login --- */
 
         .block-container {
-            max-width: 10%;
+            max-width: 15%;
             padding-top: 2rem;
         }
         
@@ -313,6 +313,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
