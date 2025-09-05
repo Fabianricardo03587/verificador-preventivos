@@ -132,26 +132,24 @@ if not st.session_state.autenticado:
         </style>
     """, unsafe_allow_html=True)
     
-    # --- Aquí usas las clases en HTML ---
+    # --- Título ---
     st.markdown('<div class="title-box">🔐 Acceso al sistema</div>', unsafe_allow_html=True)
 
+    # --- Recuadro login con formulario ---
+    with st.container():
+        st.markdown('<div class="login-box">', unsafe_allow_html=True)
     
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
-
-    CLAVE_SECRETA = "1234"
-    clave_ingresada = st.text_input("ingresa la clave", type="password")
-
-    col1, col2, col3 = st.columns([1,2,1])
-    with col2:
-        if st.button("Entrar"):
-            if clave_ingresada == CLAVE_SECRETA:
-                st.success("✅ Acceso concedido")
-                st.session_state.autenticado = True
-                st.rerun()
-            else:
-                st.error("❌ Clave incorrecta")
-
-    st.markdown('</div>', unsafe_allow_html=True)  # cierre del login-box
+        with st.form(key="login_form"):
+            clave_ingresada = st.text_input("Ingresa la clave para continuar:", type="password")
+            submitted = st.form_submit_button("Entrar")
+        
+            if submitted:
+                if clave_ingresada == "1234":
+                    st.success("✅ Acceso concedido")
+                else:
+                    st.error("❌ Clave incorrecta")
+    
+        st.markdown('</div>', unsafe_allow_html=True)
             
     st.stop()
 
@@ -368,6 +366,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
