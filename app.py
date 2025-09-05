@@ -97,11 +97,26 @@ if not st.session_state.autenticado:
     </style>
     """, unsafe_allow_html=True)
 
-    # --- Login ---
-    st.subheader("🔐 Acceso restringido")
+    CLAVE_SECRETA = "1234"
+
+    # Contenedor principal
+    st.markdown('<div class="container-box">', unsafe_allow_html=True)
+
+    st.markdown("### 🔐 Acceso restringido")
+
+    # Input de clave
     clave_ingresada = st.text_input("Ingresa tu clave:", type="password")
-    if st.button("Iniciar sesión"):
-        st.success("¡Sesión iniciada correctamente!")
+
+    # Botón
+    if st.button("Entrar"):
+        if clave_ingresada == CLAVE_SECRETA:
+            st.session_state.autenticado = True
+            st.success("✅ Acceso concedido")
+            st.rerun()
+        else:
+            st.error("❌ Clave incorrecta")
+
+    st.markdown('</div>', unsafe_allow_html=True)
             
     st.stop()
 
@@ -318,6 +333,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
