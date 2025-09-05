@@ -46,11 +46,7 @@ if not st.session_state.autenticado:
             text-align: center;
         }
 
-        # Agregamos un label centrado manual
-        st.markdown(
-            "<p style='text-align: center; font-size:16px;'>Ingresa la clave para continuar:</p>", 
-            unsafe_allow_html=True
-        )
+
         .stButton > button {
             width: 150px;
             height: 40px;
@@ -82,12 +78,6 @@ if not st.session_state.autenticado:
             font-size: 14px;
             text-align: center;
         }
-
-        # Agregamos un label centrado manual
-        st.markdown(
-            "<p style='text-align: center; font-size:16px;'>Ingresa la clave para continuar:</p>", 
-            unsafe_allow_html=True
-        )
         .stButton > button {
             width: 100%;
             height: 40px;
@@ -341,6 +331,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
