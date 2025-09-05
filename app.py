@@ -129,18 +129,18 @@ if not st.session_state.autenticado:
 
 
     # Aquí armamos el layout con HTML pero separado del contenido
-st.markdown('<div class="contenedor-centro"><div class="fondo-blanco">', unsafe_allow_html=True)
+    st.markdown('<div class="contenedor-centro"><div class="fondo-blanco">', unsafe_allow_html=True)
 
-st.title("Acceso al sistema")
-clave_ingresada = st.text_input("Ingresa tu clave:", type="password")
+    st.title("Acceso al sistema")
+    clave_ingresada = st.text_input("Ingresa tu clave:", type="password")
 
-if st.button("Entrar"):
-    if clave_ingresada == "1234":
-        st.success("✅ Acceso concedido")
-    else:
-        st.error("❌ Clave incorrecta")
+    if st.button("Entrar"):
+        if clave_ingresada == "1234":
+            st.success("✅ Acceso concedido")
+        else:
+            st.error("❌ Clave incorrecta")
 
-st.markdown('</div></div>', unsafe_allow_html=True)
+    st.markdown('</div></div>', unsafe_allow_html=True)
             
     st.stop()
 
@@ -357,6 +357,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
