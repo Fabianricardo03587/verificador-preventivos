@@ -70,7 +70,7 @@ if not st.session_state.autenticado:
             font-weight: bold;
         }
 
-         /* Recuadro principal del login */
+         /* Recuadro del login */
         .login-box {
             background: white;
             padding: 30px;
@@ -92,14 +92,13 @@ if not st.session_state.autenticado:
             margin: 0 auto; /* Lo centra */
         }
 
-        /* Cajita de texto */
+        /* Input centrado */
         .stTextInput > div > div > input {
-            width: 100%;  /* Ahora ocupa todo el contenedor que limitamos arriba */
+            width: 70%;
             font-size: 16px;
-            padding: 8px;
+            padding:8px;
             text-align: center;
-}
-
+        }
 
         .stButton > button {
             display: block;
@@ -112,8 +111,6 @@ if not st.session_state.autenticado:
             background-color: #1976d2;
             color: white;
         }
-
-
         
         /* Cuando paso el mouse (hover) */
         .stButton > button:hover {
@@ -366,6 +363,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
