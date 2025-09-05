@@ -40,7 +40,7 @@ if not st.session_state.autenticado:
         
         /* Contenedor del input */
         .stTextInput > div {
-            width: 50%;   /* Ajusta el tamaño del recuadro completo */
+            width: 80%;   /* Ajusta el tamaño del recuadro completo */
             margin: 0 auto; /* Lo centra */
         }
 
@@ -325,6 +325,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
