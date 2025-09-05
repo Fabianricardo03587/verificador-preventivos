@@ -36,8 +36,9 @@ if not st.session_state.autenticado:
 
 
         body {
-            background: linear-gradient(135deg, #0082F4, #2542FF);
+            background: linear-gradient(135deg, #2193b0, #6dd5ed);
         }
+
         
         .block-container {
             max-width: 25%;
@@ -333,6 +334,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
