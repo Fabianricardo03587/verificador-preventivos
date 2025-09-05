@@ -78,13 +78,15 @@ if not st.session_state.autenticado:
 
     /* Botón centrado */
     .stButton > button {
-        width: 50%;
-        padding: 10px;
-        background-color: #2193b0;
+        width: 80%;           /* Usa el 80% del contenedor padre */
+        max-width: 300px;     /* Limita el ancho máximo para que no se vea gigante */
+        padding: 15px 0;      /* Más espacio vertical, sin mucho horizontal */
+        background-color: #2542FF;
         color: white;
         border-radius: 8px;
         border: none;
         font-size: 16px;
+        display: block;       /* Hace que el botón sea un bloque */
         margin-top: 15px;
     }
     .stButton > button:hover {
@@ -332,6 +334,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
