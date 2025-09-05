@@ -108,7 +108,7 @@ if not st.session_state.autenticado:
         margin-top: 15px;
     }
     .stButton > button:hover {
-        background-color: #1976a0;
+        background-color: #0082F4;
     }            
 
     /* Título centrado */
@@ -352,6 +352,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
