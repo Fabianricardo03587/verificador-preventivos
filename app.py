@@ -12,9 +12,6 @@ CLAVE_SECRETA = st.secrets["CLAVE_SECRETA"]
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
- [theme]
-base="light"
-
 
 #--- DATOS FIJOS POR MÁQUINA Y PREVENTIVOS ---
 
@@ -360,6 +357,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
