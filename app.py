@@ -45,12 +45,7 @@ if not st.session_state.autenticado:
             font-size: 20px;
             text-align: center;
         }
-        clave_ingresada = st.text_input(
-            "Ingresa la clave para continuar:", 
-            text-align: center
-            type="password",
-            label_visibility="collapsed"  # oculta el label original
-        )
+
         # Agregamos un label centrado manual
         st.markdown(
             "<p style='text-align: center; font-size:16px;'>Ingresa la clave para continuar:</p>", 
@@ -87,12 +82,7 @@ if not st.session_state.autenticado:
             font-size: 14px;
             text-align: center;
         }
-        clave_ingresada = st.text_input(
-            "Ingresa la clave para continuar:", 
-            text-align: center;
-            type="password",
-            label_visibility="collapsed"  # oculta el label original
-        )
+
         # Agregamos un label centrado manual
         st.markdown(
             "<p style='text-align: center; font-size:16px;'>Ingresa la clave para continuar:</p>", 
@@ -351,6 +341,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
