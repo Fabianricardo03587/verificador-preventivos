@@ -68,12 +68,12 @@ if not st.session_state.autenticado:
     }
 
         /* Evitar que las columnas dentro del contenedor hereden fondo, sombra y altura */
-[data-testid="stVerticalBlock"] .stColumn {
-    background-color: transparent !important;
-    box-shadow: none !important;
-    height: auto !important;
-    padding: 0 !important;  /* opcional, para quitar padding extra */
-}
+    [data-testid="stVerticalBlock"] .stColumns {
+        background-color: transparent !important;
+        box-shadow: none !important;
+        height: auto !important;
+        padding: 0 !important;  /* opcional, para quitar padding extra */
+    }
 
     /* Inputs centrados */
     .stTextInput > div > div > input {
@@ -348,6 +348,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
