@@ -62,7 +62,7 @@ if not st.session_state.autenticado:
     [data-testid="stVerticalBlock"] {
 
         background-color: white !important;
-        color: black !important;             /* Texto negro fijo */
+        /* color: black !important;              Texto negro fijo */
         padding: 40px 30px;
         border-radius: 15px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -82,14 +82,6 @@ if not st.session_state.autenticado:
     color: black !important;
 }
 
-    /* Input de contraseña */
-    [data-testid="stTextInput"] input {
-        background-color: #f0f0f0 !important; /* Fondo gris claro */
-        color: black !important;              /* Texto negro */
-        border-radius: 5px !important;
-        padding: 8px !important;
-        border: 1px solid #ccc !important;    /* Borde gris */
-}
 
     /* Inputs centrados */
     .stTextInput > div > div > input {
@@ -366,6 +358,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
