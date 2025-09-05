@@ -93,8 +93,9 @@ if not st.session_state.autenticado:
     #buton
 
     .stButton {
-        display: block;
+        display: flex;
         margin: 0 auto;
+        justify-content: center; /* centra horizontalmente */
     }
 
     .stButton > button {
@@ -356,6 +357,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
