@@ -74,12 +74,12 @@ if not st.session_state.autenticado:
 """, unsafe_allow_html=True)
 
     # --- Container para todo ---
-with st.container():
-    st.markdown('<div class="container-box">', unsafe_allow_html=True)
-    st.markdown("## 🔐 Acceso al sistema", unsafe_allow_html=True)
-    clave_ingresada = st.text_input("Clave:", type="password")
-    st.button("Entrar")
-    st.markdown("</div>", unsafe_allow_html=True)
+    with st.container():
+        st.markdown('<div class="container-box">', unsafe_allow_html=True)
+        st.markdown("## 🔐 Acceso al sistema", unsafe_allow_html=True)
+        clave_ingresada = st.text_input("Clave:", type="password")
+        st.button("Entrar")
+        st.markdown("</div>", unsafe_allow_html=True)
             
     st.stop()
 
@@ -296,6 +296,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
