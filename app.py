@@ -113,13 +113,15 @@ if not st.session_state.autenticado:
     clave_ingresada = st.text_input("Ingresa tu clave:", type="password")
 
     # Botón
-    if st.button("Entrar"):
-        if clave_ingresada == CLAVE_SECRETA:
-            st.session_state.autenticado = True
-            st.success("✅ Acceso concedido")
-            st.rerun()
-        else:
-            st.error("❌ Clave incorrecta")
+    col1, col2, col3 = st.columns([1,2,1])
+    with col2:
+        if st.button("Entrar"):
+            if clave_ingresada == CLAVE_SECRETA:
+                st.session_state.autenticado = True
+                st.success("✅ Acceso concedido")
+                st.rerun()
+            else:
+                st.error("❌ Clave incorrecta")
 
     st.markdown('</div>', unsafe_allow_html=True)
             
@@ -338,6 +340,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
