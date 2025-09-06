@@ -82,6 +82,7 @@ if not st.session_state.autenticado:
 
     /* Contenedor que envuelve el input de contraseña */
     [data-testid="stPasswordInput"] {
+        background-color: #2542FF;
         max-width: 450px !important;   /* ajusta el ancho total */
         margin: 0 auto;                /* centra el input en su caja */
     }
@@ -390,6 +391,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
