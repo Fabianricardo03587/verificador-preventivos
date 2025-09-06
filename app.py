@@ -86,7 +86,7 @@ if not st.session_state.autenticado:
 
 /* Parte inferior (inputs + botón) */
 [data-testid="stVerticalBlock"] > div:last-child {
-    background-color: white;
+    background-color: #2e86de;
     padding: 30px;
     text-align: center;
 }
@@ -406,6 +406,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
