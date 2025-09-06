@@ -60,21 +60,36 @@ if not st.session_state.autenticado:
 
 
         /* Contenedor visual central (todo el bloque vertical) */
-    [data-testid="stVerticalBlock"] {
+        [data-testid="stVerticalBlock"] {
 
-        background-color: white !important;
-        padding: 40px 30px;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        max-width: 450px;
-        margin: 50px auto;
-        text-align: center;
+            background-color: white !important;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 450px;
+            margin: 50px auto;
+            text-align: center;
 
-        display: flex;           /* activa flexbox */
-        flex-direction: column;  /* apila elementos verticalmente */
-        align-items: center;     /* centra horizontalmente todos los hijos */
-        justify-content: center; /* opcional: centra vertical dentro del contenedor */
-    }
+            display: flex;           /* activa flexbox */
+            flex-direction: column;  /* apila elementos verticalmente */
+            align-items: center;     /* centra horizontalmente todos los hijos */
+            justify-content: center; /* opcional: centra vertical dentro del contenedor */
+        }
+
+    * Parte superior (título, subtítulo, etc.) */
+[data-testid="stVerticalBlock"] > div:first-child {
+    background-color: #2e86de; /* azul de ejemplo */
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+/* Parte inferior (inputs + botón) */
+[data-testid="stVerticalBlock"] > div:last-child {
+    background-color: white;
+    padding: 30px;
+    text-align: center;
+}
 
     /* Todos los textos dentro del contenedor, excepto botones */
         [data-testid="stVerticalBlock"] *:not(button) {
@@ -391,6 +406,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
