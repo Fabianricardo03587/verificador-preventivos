@@ -86,7 +86,7 @@ if not st.session_state.autenticado:
 
 /* Parte inferior (inputs + botón) */
 [data-testid="stVerticalBlock"] > div:last-child {
-    background-color: #2e86de;
+    background-color: white;
     padding: 30px;
     text-align: center;
 }
@@ -207,6 +207,26 @@ else:
         .stDataFrame {
             font-size: 14px;
         }
+
+
+         /* Contenedor visual central (todo el bloque vertical) */
+        [data-testid="stVerticalBlock"] {
+
+            background-color: white !important;
+            /*padding: 40px 30px;*/
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 800px;
+            margin: 50px auto;
+            text-align: center;
+
+            display: flex;           /* activa flexbox */
+            flex-direction: column;  /* apila elementos verticalmente */
+            align-items: center;     /* centra horizontalmente todos los hijos */
+            justify-content: center; /* opcional: centra vertical dentro del contenedor */
+        }
+
+
         </style>
     """, unsafe_allow_html=True)
 
@@ -406,6 +426,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
