@@ -216,7 +216,7 @@ else:
             /*padding: 40px 30px;*/
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            max-width: 1200px;
+            max-width: 100%;
             margin: 50px auto;
             text-align: center;
 
@@ -426,6 +426,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
