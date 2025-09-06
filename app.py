@@ -213,7 +213,7 @@ else:
         [data-testid="stVerticalBlock"] {
 
             background-color: white !important;
-            /*padding: 40px 30px;*/
+            /*padding: 0px 0px;*/
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             max-width: 100%;
@@ -426,6 +426,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
