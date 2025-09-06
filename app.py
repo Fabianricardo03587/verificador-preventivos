@@ -89,7 +89,7 @@ if not st.session_state.autenticado:
     }
     
     .stTextInput > div > div > input {
-        width: 80% !important;
+        width: 100% !important;
         padding: 10px;
         text-align: center;
         font-size: 16px;
@@ -385,6 +385,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
