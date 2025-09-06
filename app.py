@@ -191,4 +191,8 @@ c2.metric("⌛ Pendientes", pendientes)
 c3.metric("📊 Avance", f"{avance}%")
 
 df_codigos.drop(columns=["MAQUINA"], inplace=True)
-st.dataframe(df_codigos.style.applymap(color_estado), use_container_width=True
+st.dataframe(df_codigos.style.applymap(color_estado), use_container_width=True)
+
+if st.button("Cerrar sesión"):
+    st.session_state.autenticado = False
+    st.experimental_rerun()
