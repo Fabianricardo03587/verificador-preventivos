@@ -76,10 +76,15 @@ if not st.session_state.autenticado:
         justify-content: center; /* opcional: centra vertical dentro del contenedor */
     }
 
-
     /* Todos los textos dentro del contenedor, excepto botones */
-    [data-testid="stVerticalBlock"] *:not(button) {
-}
+        [data-testid="stVerticalBlock"] *:not(button) {
+    }
+
+    /* Contenedor que envuelve el input de contraseña */
+    [data-testid="stPasswordInput"] {
+        max-width: 450px !important;   /* ajusta el ancho total */
+        margin: 0 auto;                /* centra el input en su caja */
+    }
 
 
     /* Inputs centrados */
@@ -385,6 +390,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
