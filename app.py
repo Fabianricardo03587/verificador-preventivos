@@ -1,163 +1,58 @@
 import streamlit as st
 import pandas as pd
 from supabase import create_client, Client
-from io import BytesIO
 
-
-#--- CONFIGURACION DE SUPABASE ---
+# === CONFIG ===
 SUPABASE_URL = st.secrets["SUPABASE_URL"]
 SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 BUCKET_NAME = "archivos-excel"
+BUCKET_FIJO = "datos_fijos"
 CLAVE_SECRETA = st.secrets["CLAVE_SECRETA"]
+CLAVE_ADMIN = "admin123"
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-
-#--- DATOS FIJOS POR MÁQUINA Y PREVENTIVOS ---
-
-
-
-
-#--- INICIALIZAMOS session_state ---
-if "df_excel" not in st.session_state:
-    st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
-
-# --- Autenticación simple por clave ---
-CLAVE_SECRETA = st.secrets["CLAVE_SECRETA"]
-
-if "autenticado" not in st.session_state:
-    st.session_state.autenticado = False
-
-if not st.session_state.autenticado:
+# === FUNCIONES AUXILIARES ===
+def apply_styles(login=False):
     st.markdown("""
-        <style>
-        /* --- Estilos SOLO para la pantalla de login en PC --- */
-        
-        #MainMenu {
-           visibility: hidden;
-        }
-
-        /* Ocultar el encabezado completo de Streamlit */
-        header {
-            visibility: hidden;
-        }
-
-        /* Opcional: ocultar el pie de página "Made with Streamlit" */
-            footer {
-            visibility: hidden;
-        }
-
-        /* Fondo con degradado aplicado al contenedor principal */
-        .stApp {
-            background: linear-gradient(to bottom, #0082F4, #2542FF);
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-
-
-
-
-        /* Contenedor visual central (todo el bloque vertical) */
-        [data-testid="stVerticalBlock"] {
-
-            background-color: white !important;
-            padding: 40px 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            max-width: 450px;
-            margin: 50px auto;
-            text-align: center;
-
-            display: flex;           /* activa flexbox */
-            flex-direction: column;  /* apila elementos verticalmente */
-            align-items: center;     /* centra horizontalmente todos los hijos */
-            justify-content: center; /* opcional: centra vertical dentro del contenedor */
-        }
-
-    * Parte superior (título, subtítulo, etc.) */
-[data-testid="stVerticalBlock"] > div:first-child {
-    background-color: #2e86de; /* azul de ejemplo */
-    color: white;
-    padding: 25px;
-    text-align: center;
-}
-
-/* Parte inferior (inputs + botón) */
-[data-testid="stVerticalBlock"] > div:last-child {
-    background-color: white;
-    padding: 30px;
-    text-align: center;
-}
-
-    /* Todos los textos dentro del contenedor, excepto botones */
-        [data-testid="stVerticalBlock"] *:not(button) {
+    <style>
+    #MainMenu, header, footer { visibility: hidden; }
+    .stApp {
+        background: linear-gradient(to bottom, #0082F4, #2542FF);
+        background-attachment: fixed;
     }
-
-    /* Contenedor que envuelve el input de contraseña */
-    [data-testid="stPasswordInput"] {
-        background-color: #2542FF;
-        max-width: 450px !important;   /* ajusta el ancho total */
-        margin: 0 auto;                /* centra el input en su caja */
-    }
-
-
-    /* Inputs centrados */
-    .stTextInput {
-        max-width: 300px !important;
-        margin: 0 auto;
-    }
-    
-    .stTextInput > div > div > input {
-        width: 100% !important;
-        padding: 10px;
+    [data-testid="stVerticalBlock"] {
+        background-color: white;
+        padding: 40px 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        max-width: %s;
+        margin: 50px auto;
         text-align: center;
-        font-size: 16px;
-        margin: 10px 0;
-    }
-
-    #buton
-    .stButton {
         display: flex;
-        margin: 0 auto;
-        justify-content: center; /* centra horizontalmente */
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
-
     .stButton > button {
         color: white !important;
-        display: block;       /* importante: que sea un bloque */
-        margin: 0 auto;   /* centra horizontalmente */
-        width: 50%;           /* Usa el 80% del contenedor padre */
-        min-width: 140px;  /* evita que se rompa el texto */
-        max-width: 300px;     /* Limita el ancho máximo para que no se vea gigante */
-        padding: 10px 40px;      /* Más espacio vertical, sin mucho horizontal */
         background-color: #2542FF;
         border-radius: 8px;
         border: none;
         font-size: 16px;
         margin-top: 15px;
+        padding: 10px 40px;
     }
     .stButton > button:hover {
         background-color: #0082F4;
-    }            
-
-    /* Título centrado */
-    h1, h2, h3 {
-        margin-bottom: 25px;
-    } 
+    }
     </style>
-    """, unsafe_allow_html=True)
+    """ % ("450px" if login else "100%"), unsafe_allow_html=True)
 
-    # Contenedor principal
-    st.markdown('<div class="container-box">', unsafe_allow_html=True)
-
+def autenticar():
+    apply_styles(login=True)
     st.markdown("### Acceso restringido")
-
-    # Input de clave
     clave_ingresada = st.text_input("Ingresa tu clave:", type="password")
-
-    # Botón
     if st.button("Entrar"):
         if clave_ingresada == CLAVE_SECRETA:
             st.session_state.autenticado = True
@@ -165,385 +60,135 @@ if not st.session_state.autenticado:
             st.rerun()
         else:
             st.error("❌ Clave incorrecta")
-
-    st.markdown('</div>', unsafe_allow_html=True)
-            
     st.stop()
 
-else: 
-      st.markdown("""
-        <style>
-
-        #MainMenu {
-           visibility: hidden;
-        }
-
-        /* Ocultar el encabezado completo de Streamlit */
-        header {
-            visibility: hidden;
-        }
-
-        /* Opcional: ocultar el pie de página "Made with Streamlit" */
-            footer {
-            visibility: hidden;
-        }
-
-        /* Fondo con degradado aplicado al contenedor principal */
-        .stApp {
-            background: linear-gradient(to bottom, #0082F4, #2542FF);
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-        
-        .block-container {
-            max-width: 60%;
-            padding-top: 0rem;
-        }
-        h1, h2, h3 {
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        .stDataFrame {
-            font-size: 14px;
-        }
-
-
-         /* Contenedor visual central (todo el bloque vertical) */
-        [data-testid="stVerticalBlock"] {
-
-            background-color: white !important;
-            /*padding: 0px 0px;*/
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            max-width: 100%;
-            margin: 50px auto;
-            text-align: center;
-
-            display: flex;           /* activa flexbox */
-            flex-direction: column;  /* apila elementos verticalmente */
-            align-items: center;     /* centra horizontalmente todos los hijos */
-            justify-content: center; /* opcional: centra vertical dentro del contenedor */
-        }
-
-
-        </style>
-    """, unsafe_allow_html=True)
-
-    # Aquí todo tu contenido de tablas, buscadores, etc.
-
-
-
-
-
-
-
-
-
-
-
-
-st.title("Verificador de Preventivos EMS 🚀")
-
-
-# --- LECTURA DEL ARCHIVO MAESTRO (datos fijos: máquinas, códigos, responsables) ---
-BUCKET_FIJO = "datos_fijos"       # donde ya tienes maquinas_codigos.xlsx
-try:
-    data_maestro = supabase.storage.from_(BUCKET_FIJO).download("maquinas_codigos.xlsx")
-    df_maestro = pd.read_excel(data_maestro)
-except Exception as e:
-    st.error("❌ No se pudo cargar el archivo maestro (maquinas_codigos.xlsx).")
-    st.stop()
-
-
-
-#--- SUBIDA DE ARCHIVO ---
-uploaded_file = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
-
-if uploaded_file:
-    # Eliminar archivos anteriores
-    files_list = supabase.storage.from_(BUCKET_NAME).list()
-    for f in files_list:
-        if "name" in f:
-            supabase.storage.from_(BUCKET_NAME).remove([f["name"]])
-
+def cargar_maestro():
     try:
-        # Subir el nuevo archivo como bytes
+        data = supabase.storage.from_(BUCKET_FIJO).download("maquinas_codigos.xlsx")
+        return pd.read_excel(data)
+    except:
+        st.error("❌ No se pudo cargar el archivo maestro.")
+        st.stop()
+
+def subir_archivo(uploaded_file):
+    try:
+        files = supabase.storage.from_(BUCKET_NAME).list()
+        for f in files:
+            if "name" in f:
+                supabase.storage.from_(BUCKET_NAME).remove([f["name"]])
         supabase.storage.from_(BUCKET_NAME).upload(
-            "ultimo.xlsx", 
-            uploaded_file.getvalue(), 
+            "ultimo.xlsx",
+            uploaded_file.getvalue(),
             file_options={"upsert": "true"}
         )
-        st.success("Archivo subido y guardado en Supabase Storage ✅")
+        st.success("Archivo subido ✅")
     except Exception as e:
         st.error(f"❌ Error al subir el archivo: {e}")
 
+def descargar_archivo():
+    try:
+        data = supabase.storage.from_(BUCKET_NAME).download("ultimo.xlsx")
+        return pd.read_excel(data)
+    except:
+        return pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
 
-
-#--- LECTURA DEL ARCHIVO DESDE SUPABASE ---
-try:
-    data = supabase.storage.from_(BUCKET_NAME).download("ultimo.xlsx")
-    df_excel = pd.read_excel(data)
-    st.session_state.df_excel = df_excel  # Guardamos el Excel en session_state
-
-except Exception as e:
-    st.info("No hay archivo guardado en Supabase. Sube uno para comenzar.")
-    df_excel = st.session_state.df_excel
-
-# --- Valor de referencia (meta definida por el usuario) ---
-
-
-
-# --- Valor de referencia (meta de preventivos) ---
-if "meta_preventivos" not in st.session_state:
-    st.session_state.meta_preventivos = 55  # valor inicial
-
-st.metric("Meta de Preventivos", st.session_state.meta_preventivos)
-CLAVE_ADMIN = "admin123"
-# --- Opción para cambiar la meta SOLO con clave admin ---
-
-with st.expander("⚙️ Configuración de Meta (solo administradores)"):
-    clave_admin_ingresada = st.text_input("Clave de administrador:", type="password", key="clave_admin")
-    nueva_meta = st.number_input("Nueva meta de preventivos:", min_value=0, value=st.session_state.meta_preventivos, step=1)
-
-    if st.button("Actualizar Meta"):
-        if clave_admin_ingresada == CLAVE_ADMIN:
-            
-            st.session_state.meta_preventivos = nueva_meta
-            st.success(f"✅ Meta actualizada a {nueva_meta}")
-        else:
-            st.error("❌ Clave de administrador incorrecta")
-
-
-
-
-
-# Normalizamos y construimos el set de pares (MAQUINA, CODIGO) encontrados en el Excel
-if not df_excel.empty and {"MAQUINA","CODIGO"}.issubset(df_excel.columns):
-    pares_hechos = set(
-        zip(
-            df_excel["MAQUINA"].astype(str).str.strip(),
-            df_excel["CODIGO"].astype(str).str.strip()
-        )
-    )
-else:
-    pares_hechos = set()
-
-
-
-# Totales planificados (según el Excel maestro)
-total_planificados = len(df_maestro)
-
-# Completados global (cruce con el Excel de registros)
-completados_global = sum(
-    1 for _, row in df_maestro.iterrows()
-    if (str(row["MAQUINA"]).strip(), str(row["CODIGO"]).strip()) in pares_hechos
-)
-
-pendientes_global = total_planificados - completados_global
-avance_global = round((completados_global / st.session_state.meta_preventivos) * 100, 1) if total_planificados else 0.0
-
-
-
-
-cG1, cG2, cG3, cG4 = st.columns(4)
-cG1.metric("✅ Completados", completados_global)
-cG2.metric("🗂️ Planificados", st.session_state.meta_preventivos)
-cG3.metric("📊 Avance (Al plan)", f"{avance_global}%")
-cG4.metric("⌛ Pendientes (Al plan)", pendientes_global)
-
-# Comparación contra tu meta
-if completados_global >= st.session_state.meta_preventivos:
-    st.success(f"✅ Meta alcanzada ({completados_global}/{st.session_state.meta_preventivos})")
-else:
-    st.warning(f"⚠️ Faltan {st.session_state.meta_preventivos - completados_global} para la meta ({completados_global}/{st.session_state.meta_preventivos})")
-# ========= FIN CONTADOR GENERAL =========
-
-
-
-
-
-
-
-
-# --- Selección de máquina desde Excel maestro ------------------------------------------------------------
-
-maquinas = df_maestro["MAQUINA"].unique()
-maquina_seleccionada = st.selectbox("Selecciona una máquina", maquinas)
-
-# Filtrar solo los códigos de esa máquina
-df_codigos = df_maestro[df_maestro["MAQUINA"] == maquina_seleccionada]
-
-# --- CRUCE DE DATOS CON EL EXCEL DE PREVENTIVOS ---
-df = df_codigos.copy()
-df["Estado"] = df["CODIGO"].apply(
-    lambda c: "Completado" if (
-        (maquina_seleccionada in df_excel["MAQUINA"].values) and
-        (c in df_excel.loc[df_excel["MAQUINA"] == maquina_seleccionada, "CODIGO"].values)
-    ) else "Pendiente"
-)
-df["Fecha"] = df["CODIGO"].apply(
-    lambda c: (
-        df_excel.loc[
-            (df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c),
-            "FECHA"
-        ].values[0]
-        if ((df_excel["MAQUINA"] == maquina_seleccionada) & (df_excel["CODIGO"] == c)).any()
-        else ""
-    )
-)
-
-# --- Mostrar en tabla con colores ---
 def color_estado(val):
-    if val == "Pendiente":
-        return 'background-color: #FF9999'
-    elif val == "Completado":
-        return 'background-color: #99FF99'
+    if val == "Pendiente": return 'background-color: #FF9999'
+    if val == "Completado": return 'background-color: #99FF99'
     return ''
 
-# --- CONTADORES ---
-total = len(df)
-completados = (df["Estado"] == "Completado").sum()
+# === ESTADO INICIAL ===
+if "autenticado" not in st.session_state:
+    st.session_state.autenticado = False
+if "meta_preventivos" not in st.session_state:
+    st.session_state.meta_preventivos = 55
+if "df_excel" not in st.session_state:
+    st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
+
+# === LOGIN ===
+if not st.session_state.autenticado:
+    autenticar()
+else:
+    apply_styles()
+
+# === TÍTULO ===
+st.title("Verificador de Preventivos EMS 🚀")
+
+# === ARCHIVO MAESTRO Y SUBIDA ===
+df_maestro = cargar_maestro()
+uploaded_file = st.file_uploader("Sube tu archivo Excel", type=["xlsx"])
+if uploaded_file:
+    subir_archivo(uploaded_file)
+
+df_excel = descargar_archivo()
+st.session_state.df_excel = df_excel
+
+# === META PREVENTIVOS ===
+st.metric("Meta de Preventivos", st.session_state.meta_preventivos)
+with st.expander("⚙️ Configuración de Meta (solo administradores)"):
+    clave_admin = st.text_input("Clave de administrador:", type="password")
+    nueva_meta = st.number_input("Nueva meta:", value=st.session_state.meta_preventivos, step=1)
+    if st.button("Actualizar Meta") and clave_admin == CLAVE_ADMIN:
+        st.session_state.meta_preventivos = nueva_meta
+        st.success("✅ Meta actualizada")
+    elif clave_admin and clave_admin != CLAVE_ADMIN:
+        st.error("❌ Clave incorrecta")
+
+# === CONTADOR GLOBAL ===
+pares_hechos = set(zip(
+    df_excel["MAQUINA"].astype(str).str.strip(),
+    df_excel["CODIGO"].astype(str).str.strip()
+)) if not df_excel.empty else set()
+
+total_planificados = len(df_maestro)
+completados_global = sum(
+    (str(r["MAQUINA"]).strip(), str(r["CODIGO"]).strip()) in pares_hechos
+    for _, r in df_maestro.iterrows()
+)
+avance_global = round((completados_global / st.session_state.meta_preventivos) * 100, 1)
+pendientes_global = st.session_state.meta_preventivos - completados_global
+
+c1, c2, c3, c4 = st.columns(4)
+c1.metric("✅ Completados", completados_global)
+c2.metric("🗂️ Planificados", st.session_state.meta_preventivos)
+c3.metric("📊 Avance", f"{avance_global}%")
+c4.metric("⌛ Pendientes", pendientes_global)
+
+if completados_global >= st.session_state.meta_preventivos:
+    st.success("✅ Meta alcanzada")
+else:
+    st.warning(f"⚠️ Faltan {pendientes_global} para la meta")
+
+# === FILTRO POR MÁQUINA ===
+maquina = st.selectbox("Selecciona una máquina", df_maestro["MAQUINA"].unique())
+df_codigos = df_maestro[df_maestro["MAQUINA"] == maquina].copy()
+
+df_codigos["Estado"] = df_codigos["CODIGO"].apply(
+    lambda c: "Completado" if (
+        (maquina in df_excel["MAQUINA"].values) and
+        (c in df_excel[df_excel["MAQUINA"] == maquina]["CODIGO"].values)
+    ) else "Pendiente"
+)
+
+df_codigos["Fecha"] = df_codigos["CODIGO"].apply(
+    lambda c: df_excel[
+        (df_excel["MAQUINA"] == maquina) & (df_excel["CODIGO"] == c)
+    ]["FECHA"].values[0] if (
+        ((df_excel["MAQUINA"] == maquina) & (df_excel["CODIGO"] == c)).any()
+    ) else ""
+)
+
+# === MÉTRICAS Y TABLA ===
+total = len(df_codigos)
+completados = (df_codigos["Estado"] == "Completado").sum()
 pendientes = total - completados
-avance = round((completados / total) * 100, 1)
-
-col1, col2, col3 = st.columns(3)
-col1.metric("✅ Completados", completados)
-col2.metric("⌛ Pendientes", pendientes)
-col3.metric("📊 Avance", f"{avance} %")
-
-#--- MOSTRAR RESULTADOS ---
-
-# Eliminamos la columna "MAQUINA" (ya está en el buscador)
-if "MAQUINA" in df.columns:
-    df = df.drop(columns=["MAQUINA"])
-
-st.subheader(maquina_seleccionada)
-st.dataframe(df.style.applymap(color_estado), use_container_width=True)
-
-
-if st.session_state.autenticado:
-    if st.button("Cerrar sesión"):
-        st.session_state.autenticado = False
-        st.experimental_rerun()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+avance = round((completados / total) * 100, 1) if total else 0
+
+st.subheader(maquina)
+c1, c2, c3 = st.columns(3)
+c1.metric("✅ Completados", completados)
+c2.metric("⌛ Pendientes", pendientes)
+c3.metric("📊 Avance", f"{avance}%")
+
+df_codigos.drop(columns=["MAQUINA"], inplace=True)
+st.dataframe(df_codigos.style.applymap(color_estado), use_container_width=True
