@@ -197,7 +197,7 @@ else:
         }
         
         .block-container {
-            max-width: 50%;
+            max-width: 60%;
             padding-top: 1rem;
         }
         h1, h2, h3 {
@@ -426,6 +426,7 @@ if st.session_state.autenticado:
     if st.button("Cerrar sesión"):
         st.session_state.autenticado = False
         st.experimental_rerun()
+
 
 
 
