@@ -430,10 +430,10 @@ df_codigos["Estado"] = df_codigos["维保计划名称"].apply(
     ) else "Pendiente"
 )
 
-df_codigos["Fecha"] = df_codigos["CODIGO"].apply(
+df_codigos["Fecha"] = df_codigos["维保计划名称"].apply(
     lambda c: df_excel[
         (df_excel["设备编码"] == maquina) & (df_excel["维保计划名称"] == c)
-    ]["FECHA"].values[0] if (
+    ]["截止日期"].values[0] if (
         ((df_excel["设备编码"] == maquina) & (df_excel["维保计划名称"] == c)).any()
     ) else ""
 )
@@ -471,7 +471,7 @@ else:
 
 tabla_mostrar = pd.DataFrame({
     "Nombre": nombres.reset_index(drop=True),
-    "Código": df_codigos["CODIGO"].reset_index(drop=True),
+    "Código": df_codigos["维保计划名称"].reset_index(drop=True),
     "Responsable": df_codigos.get("RESPONSABLE", pd.Series([""]*len(df_codigos))).reset_index(drop=True),
     "Estado": df_codigos["Estado"].reset_index(drop=True),
     "Fecha": df_codigos["Fecha"].reset_index(drop=True)
@@ -553,6 +553,7 @@ if st.button("Cerrar sesión"):
 
 # Cierre del content-wrapper
 st.markdown('</div>', unsafe_allow_html=True)
+
 
 
 
