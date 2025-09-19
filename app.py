@@ -309,9 +309,15 @@ pares_hechos = set(zip(
     df_excel["维保计划名称"].astype(str).str.strip()
 )) if not df_excel.empty else set()
 
+
+#  ["设备编码", "维保计划名称", "截止日期"])
+
+# === "MAQUINA", "CODIGO", "FECHA"
+
+
 total_planificados = len(df_maestro)
 completados_global = sum(
-    (str(r["设备编码"]).strip(), str(r["CODIGO"]).strip()) in pares_hechos
+    (str(r["设备编码"]).strip(), str(r["维保计划名称"]).strip()) in pares_hechos
     for _, r in df_maestro.iterrows()
 )
 # evitar división por cero
@@ -538,4 +544,5 @@ if st.button("Cerrar sesión"):
 
 # Cierre del content-wrapper
 st.markdown('</div>', unsafe_allow_html=True)
+
 
