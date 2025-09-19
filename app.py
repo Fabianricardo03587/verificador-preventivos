@@ -259,7 +259,10 @@ def descargar_archivo():
         data = supabase.storage.from_(BUCKET_NAME).download("ultimo.xlsx")
         return pd.read_excel(data)
     except:
-        return pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
+        return pd.DataFrame(columns=["设备编码", "维保计划名称", "截止日期"])
+#  ["设备编码", "维保计划名称", "截止日期"])
+
+# === "MAQUINA", "CODIGO", "FECHA"
 
 
 def color_estado(val):
@@ -414,18 +417,24 @@ if "RESPONSABLE" not in df_codigos.columns:
     df_codigos["RESPONSABLE"] = ""
 
 # Calcular estado y fecha (como antes)
+
+#  ["设备编码", "维保计划名称", "截止日期"])
+
+# === "MAQUINA", "CODIGO", "FECHA"
+
+
 df_codigos["Estado"] = df_codigos["维保计划名称"].apply(
     lambda c: "Completado" if (
-        (maquina in df_excel["MAQUINA"].values) and
-        (c in df_excel[df_excel["MAQUINA"] == maquina]["CODIGO"].values)
+        (maquina in df_excel["设备编码"].values) and
+        (c in df_excel[df_excel["设备编码"] == maquina]["维保计划名称"].values)
     ) else "Pendiente"
 )
 
 df_codigos["Fecha"] = df_codigos["CODIGO"].apply(
     lambda c: df_excel[
-        (df_excel["MAQUINA"] == maquina) & (df_excel["CODIGO"] == c)
+        (df_excel["设备编码"] == maquina) & (df_excel["维保计划名称"] == c)
     ]["FECHA"].values[0] if (
-        ((df_excel["MAQUINA"] == maquina) & (df_excel["CODIGO"] == c)).any()
+        ((df_excel["设备编码"] == maquina) & (df_excel["维保计划名称"] == c)).any()
     ) else ""
 )
 
@@ -455,7 +464,7 @@ with c3:
 # Intentamos usar columnas de df_codigos: si no existe "NOMBRE" lo tomamos de MAQUINA u otra columna
 if "NOMBRE" in df_codigos.columns:
     nombres = df_codigos["NOMBRE"]
-elif "MAQUINA" in df_codigos.columns:
+elif "设备编码" in df_codigos.columns:
     nombres = df_codigos["设备编码"]
 else:
     nombres = pd.Series([maquina]*len(df_codigos))
@@ -544,5 +553,6 @@ if st.button("Cerrar sesión"):
 
 # Cierre del content-wrapper
 st.markdown('</div>', unsafe_allow_html=True)
+
 
 
