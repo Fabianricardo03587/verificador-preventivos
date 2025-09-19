@@ -276,7 +276,11 @@ if "autenticado" not in st.session_state:
 if "meta_preventivos" not in st.session_state:
     st.session_state.meta_preventivos = 55
 if "df_excel" not in st.session_state:
-    st.session_state.df_excel = pd.DataFrame(columns=["MAQUINA", "CODIGO", "FECHA"])
+    st.session_state.df_excel = pd.DataFrame(columns=["设备编码", "维保计划名称", "截止日期"])
+
+
+# === "MAQUINA", "CODIGO", "FECHA"
+
 
 # === LOGIN ===
 if not st.session_state.autenticado:
@@ -301,13 +305,13 @@ st.session_state.df_excel = df_excel
 
 # === CÁLCULOS GLOBALES ===
 pares_hechos = set(zip(
-    df_excel["MAQUINA"].astype(str).str.strip(),
-    df_excel["CODIGO"].astype(str).str.strip()
+    df_excel["设备编码"].astype(str).str.strip(),
+    df_excel["维保计划名称"].astype(str).str.strip()
 )) if not df_excel.empty else set()
 
 total_planificados = len(df_maestro)
 completados_global = sum(
-    (str(r["MAQUINA"]).strip(), str(r["CODIGO"]).strip()) in pares_hechos
+    (str(r["设备编码"]).strip(), str(r["CODIGO"]).strip()) in pares_hechos
     for _, r in df_maestro.iterrows()
 )
 # evitar división por cero
@@ -321,7 +325,7 @@ titulo_mes = "Sin fecha"
 
 if df_excel is not None and not df_excel.empty:
     # Suponiendo que la columna se llama "FECHA"
-    primera_fecha = pd.to_datetime(df_excel["FECHA"].iloc[0], errors="coerce")
+    primera_fecha = pd.to_datetime(df_excel["截止日期"].iloc[0], errors="coerce")
 
     if pd.notnull(primera_fecha):
         meses = {
@@ -394,17 +398,17 @@ with st.expander("⚙️ Configuración de Meta (solo administradores)"):
         st.error("❌ Clave incorrecta")
 
 # Selector de máquina
-maquina = st.selectbox("Selecciona una máquina", df_maestro["MAQUINA"].unique())
+maquina = st.selectbox("Selecciona una máquina", df_maestro["设备编码"].unique())
 
 # Filtrar códigos de la máquina seleccionada
-df_codigos = df_maestro[df_maestro["MAQUINA"] == maquina].copy()
+df_codigos = df_maestro[df_maestro["设备编码"] == maquina].copy()
 
 # Asegurarnos de que exista columna "RESPONSABLE" en la tabla final
 if "RESPONSABLE" not in df_codigos.columns:
     df_codigos["RESPONSABLE"] = ""
 
 # Calcular estado y fecha (como antes)
-df_codigos["Estado"] = df_codigos["CODIGO"].apply(
+df_codigos["Estado"] = df_codigos["维保计划名称"].apply(
     lambda c: "Completado" if (
         (maquina in df_excel["MAQUINA"].values) and
         (c in df_excel[df_excel["MAQUINA"] == maquina]["CODIGO"].values)
@@ -446,7 +450,7 @@ with c3:
 if "NOMBRE" in df_codigos.columns:
     nombres = df_codigos["NOMBRE"]
 elif "MAQUINA" in df_codigos.columns:
-    nombres = df_codigos["MAQUINA"]
+    nombres = df_codigos["设备编码"]
 else:
     nombres = pd.Series([maquina]*len(df_codigos))
 
@@ -534,3 +538,4 @@ if st.button("Cerrar sesión"):
 
 # Cierre del content-wrapper
 st.markdown('</div>', unsafe_allow_html=True)
+
